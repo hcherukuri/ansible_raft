@@ -1,0 +1,36 @@
+---
+- assert:
+    that:
+      - path_to_playbook_to_edit is defined
+      - path_to_playbook_dest is defined
+    quiet: true
+    fail_msg: "Missing required parameter."
+
+- name: "Ensures {{ path_to_playbook_to_edit }} exists."
+  ansible.builtin.stat:
+    path: "{{ path_to_playbook_to_edit }}"
+  register: is_path_to_file
+
+- name: "Copy files {{ path_to_playbook_to_edit }} to {{ path_to_playbook_dest }}"
+  ansible.posix.synchronize:
+    src: "{{ path_to_playbook_to_edit }}"
+    dest: "{{ path_to_playbook_dest }}"
+    copy_links: yes
+  when:
+    - is_path_to_file.stat is defined
+    - is_path_to_file.stat.exists is defined
+    - is_path_to_file.stat.exists
+
+- ansible.builtin.include_tasks: rename_vars_in_file.yml
+  vars:
+    path_to_file: "{{ path_to_playbook_dest }}"
+      #  when:
+      #- playbook_yml.stat.exists
+
+- ansible.builtin.include_tasks: rename_vars_in_file.yml
+  vars:
+    path_to_file: "{{ path_to_playbook_dest }}"
+    upstream_value: 'middleware_automation' #"{{ upstream_namespace }}"
+    downstream_value: 'redhat' #"{{ downstream_namespace }}"
+      #when:
+      #- playbook_yml.stat.exists

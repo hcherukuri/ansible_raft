@@ -1,0 +1,28 @@
+---
+- assert:
+    that:
+      - upstream_name is defined
+      - downstream_name is defined
+      - project_root_folder is defined
+    quiet: true
+    fail_msg: 'Missing required parameters'
+
+- stat:
+    path: "{{ project_root_folder }}"
+  register: is_root_folder
+- assert:
+    that:
+      - is_root_folder is defined
+      - is_root_folder.stat is defined
+      - is_root_folder.stat.exists is defined
+      - is_root_folder.stat.exists
+      - is_root_folder.stat.isdir is defined
+      - is_root_folder.stat.isdir
+    quiet: true
+    fail_msg: "Invalid project root folder: {{ project_root_folder }}"
+
+- ansible.builtin.include_tasks: fastpackage.yml
+  vars:
+    package_name: "{{ item }}"
+  loop:
+    - rsync

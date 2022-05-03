@@ -1,0 +1,28 @@
+---
+- name: "Janus transformation process"
+  hosts: localhost
+  gather_facts: no
+  vars:
+    upstream_namespace:  "middleware_automation"
+    downstream_namespace: "redhat"
+    workdir: "{{ lookup('env', 'PWD') }}"
+    upstream_projects_dir: "{{ workdir }}/upstream"
+    downstream_projects_dir: "{{ workdir }}/downstream"
+    skip_setup: True
+  collections:
+    - ansible.posix
+  pre_tasks:
+
+    - name: "Ensure required dependencies are installed"
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - rsync
+      when:
+        - not skip_setup is defined
+
+  tasks:
+    - name: "Run Janus."
+      ansible.builtin.include_role:
+        name: janus

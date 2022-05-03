@@ -1,0 +1,20 @@
+---
+- name: "Set path to downstream galaxy.yml"
+  ansible.builtin.set_fact:
+    downstream_galaxy_yml: "{{ downstream_project }}/galaxy.yml"
+
+- name: "Copy galaxy.yml from {{ upstream_project }} to {{ downstream_project }}"
+  ansible.builtin.copy:
+    src: "{{ project_root_folder }}/galaxy.yml"
+    dest: "{{ downstream_galaxy_yml }}"
+
+- name: "Update galaxy.yml to downstream namespace"
+  ansible.builtin.replace:
+    path: "{{ downstream_galaxy_yml }}"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+    #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
+  loop:
+    - { regexp: "^(namespace: ).*$", replace: "\\1{{ downstream_namespace }}" }
+    - { regexp: "^(name: ).*$", replace: "\\1{{ downstream_name }}" }
+    - { regexp: "{{ upstream_namespace }}", replace: "{{ downstream_namespace }}" }

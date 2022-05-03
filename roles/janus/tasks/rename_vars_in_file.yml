@@ -1,0 +1,43 @@
+---
+- name: "Checks that required parameters have been provided"
+  ansible.builtin.assert:
+    that:
+      - path_to_file is defined
+    quiet: true
+    fail_msg: "Missing required parameters (path to role)"
+
+- set_fact:
+    upstream_value: "{{ upstream_name }}"
+  when:
+    - not upstream_value is defined
+
+- set_fact:
+    downstream_value: "{{ downstream_name }}"
+  when:
+    - not downstream_value is defined
+
+- debug:
+    msg: "Replacing all occurences of {{ upstream_value }} by {{ downstream_value }}."
+
+- name: "Load metadata for file to edit {{ path_to_file  }}"
+  ansible.builtin.stat:
+    path: "{{ path_to_file }}"
+  register: is_path_to_file
+
+- name: "Check that metadata for {{ path_to_file }} has been loaded"
+  ansible.builtin.assert:
+    that:
+        - is_path_to_file is defined
+        - is_path_to_file.stat is defined
+    quiet: true
+    fail_msg: "Can't load metada for {{ path_to_file }}"
+
+- block:
+    - name: "Replace all occurences of upstream '{{ upstream_value }}' to downstream '{{ downstream_value }}' in '{{ path_to_file }}'"
+      ansible.builtin.replace:
+        path: "{{ path_to_file }}"
+        regexp: "{{ upstream_value }}_([^ :]*)"
+        replace: "{{ downstream_value }}_\\1"
+        #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
+  when:
+    - is_path_to_file.stat.exists

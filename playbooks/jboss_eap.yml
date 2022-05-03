@@ -1,0 +1,6 @@
+---
+- import_playbook: ../janus.yml
+  vars:
+    upstream_name: wildfly
+    downstream_name: jboss_eap
+    project_root_folder: upstream/{{ upstream_name }}.git

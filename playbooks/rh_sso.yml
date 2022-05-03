@@ -1,0 +1,6 @@
+---
+- import_playbook: ../janus.yml
+  vars:
+    upstream_name: keycloak
+    downstream_name: rh_sso
+    project_root_folder: upstream/{{ upstream_name }}.git

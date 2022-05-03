@@ -1,0 +1,23 @@
+---
+- name: "Ensure required parameters have been provided"
+  ansible.builtin.assert:
+    that:
+      - path_to_validate is defined
+      - path_to_validate != ""
+    quiet: true
+    fail_msg: "Missing required argument"
+
+- name: "Load metadata on path {{ path_to_validate }}"
+  ansible.builtin.stat:
+    path: "{{ path_to_validate }}"
+  register: is_path_to_validate
+
+- name: "Check that required metadata were found"
+  ansible.builtin.assert:
+    that:
+      - is_path_to_validate is defined
+      - is_path_to_validate.stat is defined
+      - is_path_to_validate.stat.exists is defined
+      - is_path_to_validate.stat.exists
+    quiet: true
+    fail_msg: "Provided path to project folder does not exist."

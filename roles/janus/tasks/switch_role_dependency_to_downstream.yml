@@ -1,0 +1,37 @@
+---
+- assert:
+    that:
+      - path_to_meta_main_yml is defined
+    quiet: true
+    fail_msg: 'Missing required parameter.'
+
+- stat:
+    path: "{{ path_to_meta_main_yml }}"
+  register: is_meta_mail_yml
+
+- assert:
+    that:
+      - is_meta_mail_yml is defined
+      - is_meta_mail_yml.stat is defined
+      - is_meta_mail_yml.stat.exists is defined
+    quiet: true
+    fail_msg: "Invalid path provided : {{ path_to_meta_main_yml }}."
+
+- block:
+    - name: "Update all reference to upstream name '{{ upstream_name }}' to downstream one '{{ downstream_namespace }}' in {{ path_to_meta_main_yml }}"
+      ansible.builtin.replace:
+        path: "{{ path_to_meta_main_yml }}"
+        regexp: "\\.{{ upstream_name }}"
+        replace: ".{{ downstream_name }}"
+            #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
+            #
+
+    - name: "Update all reference to upstream namespace '{{ upstream_namespace }}' to downstream one '{{ downstream_namespace }}' in {{ path_to_meta_main_yml }}"
+      ansible.builtin.replace:
+        path: "{{ path_to_meta_main_yml }}"
+        regexp: "{{ upstream_namespace }}\\."
+        replace: "{{ downstream_namespace }}."
+            #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
+
+  when:
+    - is_meta_mail_yml.stat.exists
