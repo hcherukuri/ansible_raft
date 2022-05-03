@@ -1,0 +1,30 @@
+---
+- name: "Define path to downstream project"
+  ansible.builtin.set_fact:
+    downstream_project: "{{ downstream_projects_dir }}/{{ downstream_name }}"
+
+- name: "Create new downtream project folder"
+  ansible.builtin.file:
+    path: "{{ downstream_project }}"
+    state: directory
+
+- name: "Copy all files from {{ project_root_folder }} to {{ downstream_project }}"
+  ansible.builtin.include_tasks: copy_upstream_collection.yml
+  vars:
+    src: "{{ project_root_folder }}/"
+    dest: "{{ downstream_project }}"
+
+#### Workaround: needs to find a way for rsync to NOT copy overs the roles folder
+
+- name: "Delete roles/ folder in {{ downstream_project }}."
+  ansible.builtin.file:
+    path: "{{ downstream_project }}/roles"
+    state: absent
+  changed_when: False
+
+- name: "Creates empty roles/ directory in {{ downstream_project }}."
+  ansible.builtin.file:
+    path: "{{ downstream_project }}/roles"
+    state: directory
+  changed_when: False
+#####

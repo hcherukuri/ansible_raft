@@ -1,0 +1,31 @@
+---
+- name: "List all playbooks within {{ project_root_folder }}/playbooks"
+  ansible.builtin.find:
+    paths: "{{ project_root_folder }}/playbooks"
+    recurse: no
+    patterns: '*.yml'
+  register: upstream_playbooks
+
+- name: "List all playbooks within {{ path_to_playbooks_dir_dest }}/playbooks"
+  ansible.builtin.find:
+    paths: "{{ path_to_playbooks_dir_dest }}/playbooks"
+    recurse: no
+    patterns: '*.yml'
+  register: downstream_playbooks
+
+- ansible.builtin.include_tasks: rename_vars_in_file.yml
+  vars:
+    path_to_file: "{{ playbook_file.path }}"
+  loop: "{{ downstream_playbooks.files }}"
+  loop_control:
+    loop_var: playbook_file
+
+- name: "Update all reference to upstream namespace '{{ upstream_namespace }}' to downstream one '{{ downstream_namespace }}'."
+  ansible.builtin.replace:
+    path: "{{ playbook_file.path }}"
+    regexp: "{{ upstream_namespace }}\\.(.*$)"
+    replace: "{{ downstream_namespace }}.\\1"
+        #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
+  loop: "{{ downstream_playbooks.files }}"
+  loop_control:
+    loop_var: playbook_file
