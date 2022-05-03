@@ -1,0 +1,34 @@
+---
+- ansible.builtin.assert:
+    that:
+      - path_to_docs_folder is defined
+      - upstream_namespace is defined
+      - downstream_namespace is defined
+    quiet: True
+    fail_msg: "Missing required parameter."
+
+- ansible.builtin.stat:
+    path: "{{ path_to_docs_folder }}"
+  register: is_path_to_docs_folder
+
+- ansible.builtin.assert:
+    that:
+      - is_path_to_docs_folder is defined
+      - is_path_to_docs_folder.stat is defined
+      - is_path_to_docs_folder.stat.exists is defined
+      - is_path_to_docs_folder.stat.exists
+      - is_path_to_docs_folder.stat.isdir is defined
+      - is_path_to_docs_folder.stat.isdir
+    quiet: True
+    fail_msg: "Invalid path to docs folder: {{ path_to_docs_folder }}"
+
+- ansible.builtin.find:
+    paths: "{{ path_to_docs_folder }}"
+    recurse: yes
+    patterns: '*.yml,*.rst,*.md'
+  register: docs
+
+- ansible.builtin.include_tasks: docs/rename_name_and_namespace.yml
+  vars:
+    path_to_file: "{{ item.path }}"
+  loop: "{{ docs.files }}"

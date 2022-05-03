@@ -32,9 +32,6 @@
   ansible.builtin.set_fact:
     downstream_rolename: "{{ rolename | replace(upstream_name,downstream_name) }}"
 
-- debug:
-    var: downstream_rolename
-
 - name: "Ensure downstream_rolename has been defined"
   ansible.builtin.assert:
     that:

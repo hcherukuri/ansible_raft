@@ -11,33 +11,22 @@
 - name: "Find all YAML files (.yml)  and Jinja templates (.j2) contained in role {{ path_role_folder }}"
   ansible.builtin.find:
     paths: "{{ path_role_folder }}"
-    patterns: '*.yml,*.j2'
+    patterns: '*.yml,*.j2,*.md'
     recurse: yes
   register: all_files_to_update
 
-- ansible.builtin.set_fact:
-    list_files_to_edit: []
-
-- ansible.builtin.set_fact:
-    list_files_to_edit: "{{ list_files_to_edit + [ file_to_update.path ] }}"
-  loop: "{{ all_files_to_update.files }}"
-  loop_control:
-    loop_var: file_to_update
-
-
 - ansible.builtin.assert:
     that:
-      - list_files_to_edit is defined
-      - list_files_to_edit | length > 0
+      - all_files_to_update is defined
+      - all_files_to_update.files is defined
+      - all_files_to_update.files | length > 0
     quiet: true
     fail_msg: "No file found in role folder {{ path_role_folder }}."
 
-- name: "List all files to be edit while processing role {{ path_role_folder }}:"
-  ansible.builtin.debug:
-    var: list_files_to_edit
-
 - name: "Rename vars in main.yml in vars,defaults and meta"
-  ansible.builtin.include_tasks: rename_vars_in_file.yml
-  loop: "{{ list_files_to_edit }}"
+  ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
+  vars:
+    path_to_file: "{{ file_to_update.path }}"
+  loop: "{{ all_files_to_update.files }}"
   loop_control:
-    loop_var: path_to_file
+    loop_var: file_to_update

@@ -16,11 +16,14 @@
 
 #### Workaround: needs to find a way for rsync to NOT copy overs the roles folder
 
-- name: "Delete roles/ folder in {{ downstream_project }}."
+- name: "Delete roles and .github folders in {{ downstream_project }}."
   ansible.builtin.file:
-    path: "{{ downstream_project }}/roles"
+    path: "{{ item }}"
     state: absent
   changed_when: False
+  loop:
+    - "{{ downstream_project }}/roles"
+    - "{{ downstream_project }}/.github"
 
 - name: "Creates empty roles/ directory in {{ downstream_project }}."
   ansible.builtin.file:
@@ -28,3 +31,11 @@
     state: directory
   changed_when: False
 #####
+
+- ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
+  vars:
+    path_to_file: "{{ item }}"
+  loop:
+    - "{{ downstream_project }}/README.md"
+    - "{{ downstream_project }}/CHANGELOG.rst"
+    - "{{ downstream_project }}/requirements.yml"

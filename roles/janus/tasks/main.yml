@@ -11,6 +11,10 @@
 
 - ansible.builtin.include_tasks: roles/update_galaxy_yml.yml
 
+- ansible.builtin.include_tasks: docs/main.yml
+  vars:
+    path_to_docs_folder: "{{ downstream_project }}/docs"
+
 - ansible.builtin.include_tasks: roles/janus/tasks/roles/main.yml
 
 - ansible.builtin.include_tasks: roles/janus/tasks/playbooks/main.yml

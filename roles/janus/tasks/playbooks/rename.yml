@@ -1,0 +1,23 @@
+---
+- ansible.builtin.assert:
+    that:
+      - path_to_playbook_file is defined
+    quiet: True
+    fail_msg: "Missing required parameter."
+
+- ansible.builtin.stat:
+    path: "{{ path_to_playbook_file }}"
+  register: is_path_to_playbook_file
+
+- ansible.builtin.assert:
+    that:
+      - is_path_to_playbook_file is defined
+      - is_path_to_playbook_file.stat is defined
+      - is_path_to_playbook_file.stat.exists is defined
+      - is_path_to_playbook_file.stat.exists
+    quiet: True
+    fail_msg: "Invalid path to playbook: {{ path_to_playbook_file }}"
+
+- ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
+  vars:
+    path_to_file: "{{ path_to_playbook_file }}"

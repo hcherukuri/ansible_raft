@@ -17,21 +17,13 @@
     quiet: true
     fail_msg: "Invalid path provided : {{ path_to_meta_main_yml }}."
 
-- block:
-    - name: "Update all reference to upstream name '{{ upstream_name }}' to downstream one '{{ downstream_namespace }}' in {{ path_to_meta_main_yml }}"
-      ansible.builtin.replace:
-        path: "{{ path_to_meta_main_yml }}"
-        regexp: "\\.{{ upstream_name }}"
-        replace: ".{{ downstream_name }}"
-            #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
-            #
-
-    - name: "Update all reference to upstream namespace '{{ upstream_namespace }}' to downstream one '{{ downstream_namespace }}' in {{ path_to_meta_main_yml }}"
-      ansible.builtin.replace:
-        path: "{{ path_to_meta_main_yml }}"
-        regexp: "{{ upstream_namespace }}\\."
-        replace: "{{ downstream_namespace }}."
-            #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
-
+- ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
+  vars:
+    path_to_file: "{{ path_to_meta_main_yml }}"
   when:
     - is_meta_mail_yml.stat.exists
+
+- ansible.builtin.debug:
+    msg: "INFO: role has no meta/mail.yml ({{ path_to_meta_main_yml }})"
+  when:
+    - not is_meta_mail_yml.stat.exists

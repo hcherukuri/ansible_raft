@@ -30,7 +30,7 @@
   ansible.posix.synchronize:
     src: "{{ src }}"
     dest: "{{ dest }}"
-    copy_links: yes
+    copy_links: no
     rsync_opts:
       - "--exclude ./roles/"
   when:

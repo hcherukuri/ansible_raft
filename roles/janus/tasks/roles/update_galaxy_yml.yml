@@ -8,6 +8,8 @@
     src: "{{ project_root_folder }}/galaxy.yml"
     dest: "{{ downstream_galaxy_yml }}"
 
+- ansible.builtin.include_tasks: roles/janus/tasks/roles/replace_deps_to_upstream_name_to_downstream.yml
+
 - name: "Update galaxy.yml to downstream namespace"
   ansible.builtin.replace:
     path: "{{ downstream_galaxy_yml }}"
@@ -18,3 +20,5 @@
     - { regexp: "^(namespace: ).*$", replace: "\\1{{ downstream_namespace }}" }
     - { regexp: "^(name: ).*$", replace: "\\1{{ downstream_name }}" }
     - { regexp: "{{ upstream_namespace }}", replace: "{{ downstream_namespace }}" }
+
+- ansible.builtin.include_tasks: roles/janus/tasks/roles/replace_deps_to_upstream_name_to_downstream.yml

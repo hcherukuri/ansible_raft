@@ -15,17 +15,22 @@
     path: "{{ path_to_playbooks_dir }}"
   register: is_playbook_dir
 
-- ansible.builtin.include_tasks: roles/janus/tasks/playbooks/rename_vars_and_namespace.yml
+- block:
+    - name: "List all playbooks within {{ path_to_playbooks_dir_dest }}/playbooks"
+      ansible.builtin.find:
+        paths: "{{ path_to_playbooks_dir_dest }}/playbooks"
+        recurse: no
+        patterns: '*.yml'
+      register: downstream_playbooks
+
+    - ansible.builtin.include_tasks: playbooks/rename.yml
+      vars:
+        path_to_playbook_file: "{{ playbook_file.path }}"
+      loop: "{{ downstream_playbooks.files }}"
+      loop_control:
+        loop_var: playbook_file
   when:
     - is_playbook_dir.stat.exists
-
-- ansible.builtin.include_tasks: playbooks/update_playbooks.yml
-  vars:
-    root_folder: "{{ downstream_project }}/playbooks/"
-
-- name: "Update all dependency to upstream collection '{{ upstream_namespace }}.*' to downstream's one '{{ downstream_namespace }}'."
-  debug:
-    msg: "TODO"
 
 - name: "List all roles within {{ downstream_project }}/roles"
   ansible.builtin.find:
@@ -42,9 +47,9 @@
 
 - ansible.builtin.include_tasks: roles/switch_role_dependency_to_downstream.yml
   vars:
-    path_to_meta_main_yml: "{{ downstream_roles_file.path }}/meta/main.yml"
+    path_to_meta_main_yml: "{{ downstream_role_dir.path }}/meta/main.yml"
   loop: "{{ downstream_roles.files }}"
   loop_control:
-    loop_var: downstream_roles_file
+    loop_var: downstream_role_dir
   when:
     - downstream_roles.files is defined
