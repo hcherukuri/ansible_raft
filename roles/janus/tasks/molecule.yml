@@ -1,24 +1,7 @@
 ---
-- assert:
-    that:
-      - molecule_dir is defined
-    quiet: True
-    fail_msg: "Missing required parameters."
-
-- ansible.builtin.stat:
-    path: "{{ molecule_dir }}"
-  register: is_molecule_dir
-
-- assert:
-    that:
-      - is_molecule_dir is defined
-      - is_molecule_dir.stat is defined
-      - is_molecule_dir.stat.exists is defined
-      - is_molecule_dir.stat.exists
-      - is_molecule_dir.stat.isdir is defined
-      - is_molecule_dir.stat.isdir
-    quiet: True
-    fail_msg: "Invalid path to dir: {{ molecule_dir }}."
+- ansible.builtin.include_tasks: utils/check_dir_exists.yml
+  vars:
+    path_to_dir: "{{ molecule_dir }}"
 
 - ansible.builtin.find:
     paths: "{{ molecule_dir }}"
