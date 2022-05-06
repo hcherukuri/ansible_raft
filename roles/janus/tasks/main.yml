@@ -18,3 +18,7 @@
 - ansible.builtin.include_tasks: roles/janus/tasks/roles/main.yml
 
 - ansible.builtin.include_tasks: roles/janus/tasks/playbooks/main.yml
+
+- ansible.builtin.include_tasks: roles/janus/tasks/molecule.yml
+  vars:
+    molecule_dir: "{{ downstream_project }}/molecule"
