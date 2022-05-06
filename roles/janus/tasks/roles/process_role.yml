@@ -49,6 +49,6 @@
     dest: "{{ downstream_role_path }}"
 
 - name: "Rename all upstream variables from '{{ upstream_name }}' prefix to '{{ downstream_name }}' prefix."
-  ansible.builtin.include_tasks: roles/janus/tasks/roles/rewrite_role_vars.yml
+  ansible.builtin.include_tasks: roles/rewrite_role_vars.yml
   vars:
     path_role_folder: "{{ downstream_role_path }}"

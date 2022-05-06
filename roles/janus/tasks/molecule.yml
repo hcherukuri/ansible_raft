@@ -1,8 +1,4 @@
 ---
-- ansible.builtin.include_tasks: utils/check_dir_exists.yml
-  vars:
-    path_to_dir: "{{ molecule_dir }}"
-
 - ansible.builtin.find:
     paths: "{{ molecule_dir }}"
     recurse: yes

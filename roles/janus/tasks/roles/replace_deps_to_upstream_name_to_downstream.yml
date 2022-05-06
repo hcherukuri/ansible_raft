@@ -1,24 +1,7 @@
 ---
-- ansible.builtin.assert:
-    that:
-      - downstream_galaxy_yml is defined
-    quiet: True
-    fail_msg: "Required parameter is missing."
-
-- name: "Load metadata on galaxy.yml: {{ downstream_galaxy_yml }}."
-  ansible.builtin.stat:
-    path: "{{ downstream_galaxy_yml }}"
-  register: is_downstream_galaxy_yml
-
-- name: "Ensures provided path exists and is a directory."
-  assert:
-    that:
-      - is_downstream_galaxy_yml is defined
-      - is_downstream_galaxy_yml.stat is defined
-      - is_downstream_galaxy_yml.stat.exists is defined
-      - is_downstream_galaxy_yml.stat.exists
-    quiet: True
-    fail_msg: "Invalid path to galaxy.yml provided: {{ downstream_galaxy_yml }}"
+- ansible.builtin.include_tasks: utils/check_file_exists.yml
+  vars:
+    path_to_file: "{{ downstream_galaxy_yml }}"
 
 - ansible.builtin.set_fact:
     upstream_downstream_collections_map:

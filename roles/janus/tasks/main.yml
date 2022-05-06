@@ -1,13 +1,13 @@
 ---
-- ansible.builtin.include_tasks: roles/janus/tasks/prereqs.yml
+- ansible.builtin.include_tasks: prereqs.yml
 
-- ansible.builtin.include_tasks: roles/janus/tasks/validations/check_required_parameters.yml
+- ansible.builtin.include_tasks: utils/check_required_parameters.yml
 
-- ansible.builtin.include_tasks: roles/janus/tasks/validations/path_check.yml
+- ansible.builtin.include_tasks: utils/check_dir_exists.yml
   vars:
-    path_to_validate: "{{ project_root_folder }}"
+    path_to_dir: "{{ project_root_folder }}"
 
-- ansible.builtin.include_tasks: roles/janus/tasks/collection_skeleton.yml
+- ansible.builtin.include_tasks: collection_skeleton.yml
 
 - ansible.builtin.include_tasks: roles/update_galaxy_yml.yml
 
@@ -15,10 +15,10 @@
   vars:
     path_to_docs_folder: "{{ downstream_project }}/docs"
 
-- ansible.builtin.include_tasks: roles/janus/tasks/roles/main.yml
+- ansible.builtin.include_tasks: roles/main.yml
 
-- ansible.builtin.include_tasks: roles/janus/tasks/playbooks/main.yml
+- ansible.builtin.include_tasks: playbooks/main.yml
 
-- ansible.builtin.include_tasks: roles/janus/tasks/molecule.yml
+- ansible.builtin.include_tasks: molecule.yml
   vars:
     molecule_dir: "{{ downstream_project }}/molecule"

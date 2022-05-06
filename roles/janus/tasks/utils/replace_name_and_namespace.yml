@@ -7,19 +7,6 @@
     quiet: True
     fail_msg: "Missing required parameters."
 
-- ansible.builtin.stat:
-    path: "{{ path_to_file }}"
-  register: is_path_to_file
-
-- ansible.builtin.assert:
-    that:
-      - is_path_to_file is defined
-      - is_path_to_file.stat is defined
-      - is_path_to_file.stat.exists is defined
-      - is_path_to_file.stat.exists
-    quiet: True
-    fail_msg: "Invalid path to docs folder: {{ path_to_file }}"
-
 - ansible.builtin.include_tasks: rename_vars_in_file.yml
 
 - ansible.builtin.include_tasks: rename_vars_in_file.yml

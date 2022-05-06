@@ -6,25 +6,9 @@
     quiet: true
     fail_msg: 'Missing required parameters'
 
-- name: "Ensures {{ src }} exists."
-  ansible.builtin.stat:
-    path: "{{ src }}"
-  register: is_src
-
-- ansible.builtin.assert:
-    that:
-      - is_src is defined
-      - is_src.stat is defined
-    quiet: true
-    fail_msg: "Provided source folder {{ src }} is invalid."
-
-- assert:
-    that:
-      - not is_src.stat.exists
-    fail_msg: "{{ item.src }} is required ({{ item.required }}) but does not exists."
-  when:
-    - item.required is defined
-    - item.required
+- ansible.builtin.include_tasks: utils/check_dir_exists.yml
+  vars:
+    path_to_dir: "{{ src }}"
 
 - name: "Copy subfolders {{ src }} to {{ dest }}"
   ansible.posix.synchronize:
@@ -33,6 +17,3 @@
     copy_links: no
     rsync_opts:
       - "--exclude ./roles/"
-  when:
-    - is_src.stat.exists
-    - is_src.stat.isdir
