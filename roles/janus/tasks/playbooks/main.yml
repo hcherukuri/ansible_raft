@@ -8,7 +8,7 @@
 
 - set_fact:
     path_to_playbooks_dir: "{{ project_root_folder }}/playbooks"
-    path_to_playbooks_dir_dest: "{{ downstream_project }}"
+    path_to_playbooks_dir_dest: "{{ downstream_project }}/playbooks"
 
 - name: "Load metadata on folder {{ path_to_playbooks_dir }}"
   ansible.builtin.stat:
@@ -16,9 +16,9 @@
   register: is_playbook_dir
 
 - block:
-    - name: "List all playbooks within {{ path_to_playbooks_dir_dest }}/playbooks"
+    - name: "List all playbooks within {{ path_to_playbooks_dir_dest }}"
       ansible.builtin.find:
-        paths: "{{ path_to_playbooks_dir_dest }}/playbooks"
+        paths: "{{ path_to_playbooks_dir_dest }}"
         recurse: no
         patterns: '*.yml'
       register: downstream_playbooks
