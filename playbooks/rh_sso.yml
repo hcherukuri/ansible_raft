@@ -3,4 +3,5 @@
   vars:
     upstream_name: keycloak
     downstream_name: rh_sso
-    project_root_folder: upstream/{{ upstream_name }}.git
+    project_root_folder: "upstream/{{ upstream_name }}.git"
+    project_git_url: "https://github.com/ansible-middleware/keycloak.git"
