@@ -33,3 +33,9 @@
     - name: "Run Janus."
       ansible.builtin.include_role:
         name: janus
+  post_tasks:
+    - name: "Build collection for {{ downstream_name }}"
+      command: ansible-galaxy collection build .
+      args:
+        chdir: "{{ downstream_project }}"
+        #creates: too
