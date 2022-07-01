@@ -20,6 +20,7 @@
     - { replace: '#tomcat_install_method: local_zipfiles', to: 'tomcat_install_method: local_zipfiles' }
     - { replace: '#tomcat_install_dir: /opt', to: 'tomcat_install_dir: /opt' }
     - { replace: '#tomcat_zipfile: \"jws-', to: 'tomcat_zipfile: "jws-' }
-    - { replace: '#tomcat_zipfile: \"jws-', to: 'tomcat_zipfile: "jws-' }
+    - { replace: '#tomcat_native_zipfile: \"jws-', to: 'tomcat_native_zipfile: "jws-' }
+    - { replace: '#tomcat_native: True', to: 'tomcat_native: True' }
     - { replace: 'tomcat_service_name: tomcat', to: '#tomcat_service_name: tomcat' }
     - { replace: '#tomcat_service_name: jws', to: 'tomcat_service_name: jws' }
