@@ -3,5 +3,4 @@
   vars:
     upstream_name: redhat_csp_download
     downstream_name: redhat_csp_download
-    project_root_folder: upstream/{{ upstream_name }}.git
     project_git_url: "https://github.com/ansible-middleware/redhat-csp-download.git"

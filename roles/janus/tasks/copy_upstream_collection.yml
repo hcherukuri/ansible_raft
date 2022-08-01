@@ -6,14 +6,7 @@
     quiet: true
     fail_msg: 'Missing required parameters'
 
-- ansible.builtin.include_tasks: utils/check_dir_exists.yml
-  vars:
-    path_to_dir: "{{ src }}"
-
-- name: "Copy subfolders {{ src }} to {{ dest }}"
-  ansible.posix.synchronize:
-    src: "{{ src }}"
+- name: "Git clone {{ src }} to {{ dest }}"
+  ansible.builtin.git:
+    repo: "{{ src }}"
     dest: "{{ dest }}"
-    copy_links: no
-    rsync_opts:
-      - "--exclude ./roles/"

@@ -3,5 +3,4 @@
   vars:
     upstream_name: infinispan
     downstream_name: jboss_data_grid
-    project_root_folder: "upstream/{{ upstream_name }}.git"
     project_git_url: "https://github.com/ansible-middleware/infinispan.git"

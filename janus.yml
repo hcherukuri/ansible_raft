@@ -12,6 +12,12 @@
   collections:
     - ansible.posix
   pre_tasks:
+    - name: "Determine full path to project folder (if not provided)."
+      ansible.builtin.set_fact:
+        project_root_folder: "{{ lookup('env', 'PWD') }}/upstream/{{ upstream_name }}.git"
+      when:
+        - not project_root_folder is defined
+        - upstream_name is defined
 
     - name: "Ensure required dependencies are installed"
       ansible.builtin.package:

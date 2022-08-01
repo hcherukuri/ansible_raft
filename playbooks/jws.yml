@@ -3,5 +3,4 @@
   vars:
     upstream_name: jws
     downstream_name: "{{ upstream_name }}"
-    project_root_folder: "upstream/{{ upstream_name }}.git"
     project_git_url: "https://github.com/ansible-middleware/jws-ansible-playbook.git"
