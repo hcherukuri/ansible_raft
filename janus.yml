@@ -9,8 +9,6 @@
     upstream_projects_dir: "{{ workdir }}/upstream"
     downstream_projects_dir: "{{ workdir }}/downstream"
     skip_setup: True
-  collections:
-    - ansible.posix
   pre_tasks:
     - name: "Determine full path to project folder (if not provided)."
       ansible.builtin.set_fact:
@@ -18,15 +16,6 @@
       when:
         - not project_root_folder is defined
         - upstream_name is defined
-
-    - name: "Ensure required dependencies are installed"
-      ansible.builtin.package:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - rsync
-      when:
-        - not skip_setup is defined
 
     - name: "Git clone {{ project_git_url }} into {{ project_root_folder }}"
       ansible.builtin.git:
