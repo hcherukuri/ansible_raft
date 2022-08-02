@@ -8,8 +8,18 @@
     workdir: "{{ lookup('env', 'PWD') }}"
     upstream_projects_dir: "{{ workdir }}/upstream"
     downstream_projects_dir: "{{ workdir }}/downstream"
+    downstream_repository_host_env_varname: 'INTERNAL_GIT_REPOSITORY_URL'
     skip_setup: True
   pre_tasks:
+    - name: "Ensure all required parameters have been provided"
+      ansible.builtin.assert:
+        that:
+          - downstream_name is defined
+          - upstream_name is defined
+          - project_git_url is defined
+        quiet: True
+        fail_msg: "Missing required parameter(s)."
+
     - name: "Determine full path to project folder (if not provided)."
       ansible.builtin.set_fact:
         project_root_folder: "{{ lookup('env', 'PWD') }}/upstream/{{ upstream_name }}.git"
@@ -17,11 +27,14 @@
         - not project_root_folder is defined
         - upstream_name is defined
 
+    - name: "Define path to downstream project"
+      ansible.builtin.set_fact:
+        downstream_project: "{{ downstream_projects_dir }}/{{ downstream_name }}"
+
     - name: "Git clone {{ project_git_url }} into {{ project_root_folder }}"
-      ansible.builtin.git:
-        repo: "{{ project_git_url }}"
-        dest: "{{ project_root_folder }}"
-        version: "{{ project_git_version | default(omit) }}"
+      ansible.builtin.include_role:
+        name: git
+        tasks_from: clone.yml
       when:
         - project_root_folder is defined
         - project_git_url is defined
@@ -29,9 +42,68 @@
     - name: "Run Janus."
       ansible.builtin.include_role:
         name: janus
+
   post_tasks:
+
+    - name: "Determine release version (if provided)"
+      ansible.builtin.set_fact:
+        release_version: "{{ lookup('env','RELEASE_VERSION') }}"
+
+    - name: "Peform release {{ release_version }}."
+      block:
+        - name: "Retrieve downstream repository host."
+          ansible.builtin.set_fact:
+            downstream_repository_host: "{{ lookup('env', downstream_repository_host_env_varname) }}"
+
+        - name: "Ensure downstream repository host value has been retrieved."
+          ansible.builtin.assert:
+            that:
+              - downstream_repository_host is defined
+              - downstream_repository_host != ""
+            quiet: True
+            fail_msg: "Could not retrieve downstream repository host from env variable {{ downstream_repository_host_env_varname }}."
+
+        - name: "Determine downstream project repository URL."
+          ansible.builtin.set_fact:
+            downstream_repository_url: "{{ downstream_repository_host }}/ansible-middleware/{{ downstream_name }}"
+
+        - name: "Add release repository as downstream:"
+          ansible.builtin.include_role:
+            name: git
+            tasks_from: add_remote.yml
+          vars:
+            remote_name: downstream
+            remote_url: "{{ downstream_repository_url }}"
+
+        - name: "Append {{ downstream_namespace }} to release version {{ release_version }} to create tag"
+          ansible.builtin.set_fact:
+            tag: "{{ release_version }}-{{ downstream_namespace }}"
+
+        - name: "Commit changes."
+          ansible.builtin.include_role:
+            name: git
+            tasks_from: commit.yml
+          vars:
+            message: "'Release {{ tag }}'"
+
+        - name: "Tag version as {{ release_version }}."
+          ansible.builtin.include_role:
+            name: git
+            tasks_from: tag.yml
+
+        - name: "Publish release branch on {{ downstream_repository }} for release {{ release_version }}."
+          ansible.builtin.include_role:
+            name: git
+            tasks_from: push.yml
+          vars:
+            remote_name: downstream
+            local_branch: main
+            remote_branch: "{{ tag }}"
+      when:
+        - release_version is defined
+        - release_version != ""
+
     - name: "Build collection for {{ downstream_name }}"
       command: ansible-galaxy collection build .
       args:
         chdir: "{{ downstream_project }}"
-        #creates: too

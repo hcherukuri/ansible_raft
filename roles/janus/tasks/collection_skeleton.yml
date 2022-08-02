@@ -1,9 +1,12 @@
 ---
-- name: "Define path to downstream project"
-  ansible.builtin.set_fact:
-    downstream_project: "{{ downstream_projects_dir }}/{{ downstream_name }}"
+- name: "Ensure required parameter(s) are provided."
+  ansible.builtin.assert:
+    that:
+      - downstream_project is defined
+    quiet: True
+    fail_msg: "Missing required parameter(s)."
 
-- name: "Create new downtream project folder"
+- name: "Ensure downtream project folder {{ downstream_project }} exists."
   ansible.builtin.file:
     path: "{{ downstream_project }}"
     state: directory
