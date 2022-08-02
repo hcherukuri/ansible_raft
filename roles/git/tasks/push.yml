@@ -11,8 +11,5 @@
   ansible.builtin.set_fact:
     git_command: "push  {{ remote_name }} {{ local_branch }}:{{ remote_branch }}"
 
-- debug:
-    msg: "git {{ git_command }}"
-    #- name: "Execute git command '{{ git_command }}'"
-    # ansible.builtin.include_tasks: run_git_command.yml
-
+- name: "Execute git command '{{ git_command }}'"
+  ansible.builtin.include_tasks: run_git_command.yml
