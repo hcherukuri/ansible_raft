@@ -14,6 +14,6 @@
 - ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
   vars:
     path_to_file: "{{ downstream_galaxy_yml }}"
-    upstream_value: "{{ item.upstream_name }}"
-    downstream_value: "{{ item.downstream_name }}"
+    upstream_value: "{{ upstream_namespace }}.{{ item.upstream_name }}"
+    downstream_value: "{{ downstream_namespace }}.{{ item.downstream_name }}"
   loop: "{{ upstream_downstream_collections_map }}"
