@@ -30,3 +30,4 @@
   loop: "{{ all_files_to_update.files }}"
   loop_control:
     loop_var: file_to_update
+  when: file_to_update != 'meta/argument_specs.yml'

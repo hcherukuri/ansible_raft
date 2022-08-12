@@ -7,7 +7,11 @@
     quiet: True
     fail_msg: "Missing required parameters."
 
+- ansible.builtin.include_tasks: rename_vars_in_file_with_override.yml
+  when: "'defaults/main.yml' in path_to_file"
+
 - ansible.builtin.include_tasks: rename_vars_in_file.yml
+  when: "'defaults/main.yml' not in path_to_file"
 
 - ansible.builtin.include_tasks: rename_vars_in_file.yml
   vars:
