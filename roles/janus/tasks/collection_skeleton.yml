@@ -14,7 +14,7 @@
 - name: "Copy all files from {{ project_root_folder }} to {{ downstream_project }}"
   ansible.builtin.include_tasks: copy_upstream_collection.yml
   vars:
-    src: "{{ project_root_folder }}"
+    src: "{{ project_root_folder }}/"
     dest: "{{ downstream_project }}"
 
 - name: "Delete .github folders in {{ downstream_project }}."

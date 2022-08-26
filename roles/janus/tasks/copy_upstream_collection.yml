@@ -6,7 +6,7 @@
     quiet: true
     fail_msg: 'Missing required parameters'
 
-- name: "Git clone {{ src }} to {{ dest }}"
-  ansible.builtin.git:
-    repo: "{{ src }}"
+- name: "rsync {{ src }} to {{ dest }}"
+  ansible.posix.synchronize:
+    src: "{{ src }}"
     dest: "{{ dest }}"
