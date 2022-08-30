@@ -4,4 +4,4 @@
     upstream_name: jws
     downstream_name: "{{ upstream_name }}"
     project_git_url: "https://github.com/guidograzioli/jws-ansible-playbook.git"
-    project_git_version: jws_validation_ds_defaults
+    project_git_version: molecule_downstream_force_install
