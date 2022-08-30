@@ -5,4 +5,5 @@
     downstream_name: amq_broker
     project_git_url: "https://github.com/ansible-middleware/amq.git"
     false_positives:
-      - "amq_broker[.]xsd"
+      - match: "amq_broker[.]xsd"
+        replace: "activemq.xsd"
