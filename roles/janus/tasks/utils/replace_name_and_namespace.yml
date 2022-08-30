@@ -23,6 +23,6 @@
   vars:
     upstream_value: "{{ string }}"
     downstream_value: "{{ string | replace(downstream_name,upstream_name) }}"
-  loop: "{{ false_positives }}"
+  loop: "{{ false_positives | default([]) }}"
   loop_control:
     loop_var: string
