@@ -21,3 +21,4 @@
     #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
   when:
     - is_path_to_file.stat.exists
+    - upstream_value != downstream_value
