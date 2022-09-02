@@ -20,8 +20,7 @@
 
 - name: "debug"
   ansible.builtin.debug:
-    msg: "{{ downstream_defaults | default({}) | dict2items }}"
-  when: downstream_defaults | length > 0
+    var: downstream_defaults
 
 ### disabled for now as collections does not yet complies to this
 - name: "{{ janus_strict_role_name }} Check that role name '{{ rolename }}' begin with '{{ upstream_name }}'."

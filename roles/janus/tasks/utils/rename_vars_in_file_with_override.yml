@@ -31,8 +31,9 @@
     - downstream_defaults | length > 0
     - is_path_to_file.stat.exists
     - "'defaults/main.yml' in path_to_file"
-    - not downstream_default.value.default is search('\{\{')
-  loop: "{{ downstream_defaults | default({}) | dict2items }}"
+    - downstream_default.value is defined and downstream_default.value.default is defined
+    - not downstream_default.value.default | default('') is search('\{\{')
+  loop: "{{ downstream_defaults | default({}) | dict2items | default([]) }}"
   loop_control:
     loop_var: downstream_default
 
@@ -44,8 +45,9 @@
   when:
     - downstream_defaults | length > 0
     - is_path_to_file.stat.exists
+    - downstream_default.value is defined and downstream_default.value.default is defined
     - "'defaults/main.yml' in path_to_file"
-    - downstream_default.value.default is search('\{\{')
-  loop: "{{ downstream_defaults | default({}) | dict2items }}"
+    - downstream_default.value.default | default('') is search('\{\{')
+  loop: "{{ downstream_defaults | default({}) | dict2items | default([]) }}"
   loop_control:
     loop_var: downstream_default
