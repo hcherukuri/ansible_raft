@@ -7,4 +7,3 @@
     false_positives:
       - match: "eap_install_workdir: /opt/eap"
         replace: "eap_install_workdir: /opt"
-
