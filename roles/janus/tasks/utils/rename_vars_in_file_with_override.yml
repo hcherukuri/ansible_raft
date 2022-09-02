@@ -28,6 +28,7 @@
     regexp: "^{{ downstream_default.key }}:.*$"
     line: "{{ downstream_default.key }}: {{ downstream_default.value.default }}"
   when:
+    - downstream_defaults | length > 0
     - is_path_to_file.stat.exists
     - "'defaults/main.yml' in path_to_file"
     - not downstream_default.value.default is search('\{\{')
@@ -41,6 +42,7 @@
     regexp: "^{{ downstream_default.key }}:.*$"
     line: "{{ downstream_default.key }}: \"{{ downstream_default.value.default }}\""
   when:
+    - downstream_defaults | length > 0
     - is_path_to_file.stat.exists
     - "'defaults/main.yml' in path_to_file"
     - downstream_default.value.default is search('\{\{')
