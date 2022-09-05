@@ -38,8 +38,7 @@
 
 - name: "Define downstream rolename"
   ansible.builtin.set_fact:
-    downstream_rolename: "{{ rolename | replace(upstream_name,downstream_name) }}"
-  when: downstream_name != rolename
+    downstream_rolename: "{{ (rolename | replace(upstream_name,downstream_name)) if downstream_name != rolename else rolename }}"
 
 - name: "Ensure downstream_rolename has been defined"
   ansible.builtin.assert:
