@@ -20,7 +20,7 @@
 
 - name: "debug"
   ansible.builtin.debug:
-    var: downstream_defaults
+    msg: "{{ downstream_defaults }}"
 
 ### disabled for now as collections does not yet complies to this
 - name: "{{ janus_strict_role_name }} Check that role name '{{ rolename }}' begin with '{{ upstream_name }}'."
@@ -39,6 +39,7 @@
 - name: "Define downstream rolename"
   ansible.builtin.set_fact:
     downstream_rolename: "{{ rolename | replace(upstream_name,downstream_name) }}"
+  when: downstream_name != rolename
 
 - name: "Ensure downstream_rolename has been defined"
   ansible.builtin.assert:
