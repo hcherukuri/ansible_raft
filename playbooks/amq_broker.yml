@@ -7,3 +7,7 @@
     false_positives:
       - match: "amq_broker[.]xsd"
         replace: "activemq.xsd"
+      - match: "org[.]apache[.]amq_broker[.]"
+        replace: "org[.]apache[.]activemq[.]"
+      - match: "hawtio[.]realm=amq_broker"
+        replace: "hawtio.realm=activemq"
