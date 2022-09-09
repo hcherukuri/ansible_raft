@@ -15,3 +15,5 @@
         replace: "activemq.org"
       - match: "redhat[.]amq(?!_broker)"
         replace: "redhat.amq_broker"
+      - match: "urn:amq_broker"
+        replace: "urn:activemq"
