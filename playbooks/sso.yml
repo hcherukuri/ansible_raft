@@ -24,3 +24,7 @@
         replace: "${keycloak."
       - match: "urn:jboss:domain:sso-server:1[.]1"
         replace: "urn:jboss:domain:keycloak-server:1.1"
+      - match: "start_sso[.]yml"
+        replace: "start_keycloak.yml"
+      - match: "stop_sso[.]yml"
+        replace: "stop_keycloak.yml"
