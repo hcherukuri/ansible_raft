@@ -7,9 +7,9 @@
     upstream_downstream_collections_map:
       - { upstream_name: 'redhat_csp_download', downstream_name: 'redhat_csp_download' }
       - { upstream_name: 'jws', downstream_name: 'jws' }
-      - { upstream_name: 'wildfly', downstream_name: 'jboss_eap' }
-      - { upstream_name: 'infinispan', downstream_name: 'jboss_data_grid' }
-      - { upstream_name: 'keycloak', downstream_name: 'rh_sso' }
+      - { upstream_name: 'wildfly', downstream_name: 'eap' }
+      - { upstream_name: 'infinispan', downstream_name: 'data_grid' }
+      - { upstream_name: 'keycloak', downstream_name: 'sso' }
       - { upstream_name: 'amq', downstream_name: 'amq_broker' }
 
 - ansible.builtin.include_tasks: utils/rename_vars_in_file.yml

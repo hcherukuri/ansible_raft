@@ -19,3 +19,7 @@
         replace: "<infinispan"
       - match: "</data_grid>"
         replace: "</infinispan>"
+      - match: "[$][{]data_grid[.]"
+        replace: "${infinispan."
+      - match: "schemas[/]data_grid-"
+        replace: "schemas/infinispan-"
