@@ -1,5 +1,5 @@
 ---
-- assert:
+- ansible.builtin.assert:
     that:
       - path_to_dir is defined
     quiet: True
@@ -9,7 +9,7 @@
     path: "{{ path_to_dir }}"
   register: is_path_to_dir
 
-- assert:
+- ansible.builtin.assert:
     that:
       - is_path_to_dir is defined
       - is_path_to_dir.stat is defined
