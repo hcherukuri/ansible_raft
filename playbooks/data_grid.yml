@@ -4,3 +4,6 @@
     upstream_name: infinispan
     downstream_name: data_grid
     project_git_url: "https://github.com/ansible-middleware/infinispan.git"
+    false_positives:
+      - match: "data_grid[.]service[.]j2"
+        replace: "infinispan.service.j2"
