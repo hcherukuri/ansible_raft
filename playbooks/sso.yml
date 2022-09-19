@@ -5,3 +5,22 @@
     downstream_name: sso
     project_root_folder: "{{ lookup('env', 'PWD') }}/upstream/{{ upstream_name }}.git"
     project_git_url: "https://github.com/ansible-middleware/keycloak.git"
+    false_positives:
+      - match: "sso[.]service[.]j2"
+        replace: "keycloak.service.j2"
+      - match: "sso-sysconfig[.]j2"
+        replace: "keycloak-sysconfig.j2"
+      - match: "sso-service[.]sh[.]j2"
+        replace: "keycloak-service.sh.j2"
+      - match: 'cache-container name="sso" modules="org[.]sso[.]sso-model-infinispan"'
+        replace: 'cache-container name="keycloak" modules="org.keycloak.keycloak-model-infinispan"'
+      - match: "org[.]sso[.]"
+        replace: "org.keycloak."
+      - match: "sso[.]org"
+        replace: "keycloak.org"
+      - match: "sso-server-subsystem"
+        replace: "keycloak-server-subsystem"
+      - match: "[$][{]sso[.]"
+        replace: "${keycloak."
+      - match: "urn:jboss:domain:sso-server:1[.]1"
+        replace: "urn:jboss:domain:keycloak-server:1.1"
