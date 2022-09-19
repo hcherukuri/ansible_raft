@@ -9,10 +9,6 @@
   when:
     - not downstream_value is defined
 
-- ansible.builtin.stat:
-    path: "{{ path_to_file }}"
-  register: is_path_to_file
-
 - name: "Replace all occurences of upstream '{{ upstream_value }}' to downstream '{{ downstream_value }}' in '{{ path_to_file }}'"
   ansible.builtin.replace:
     path: "{{ path_to_file }}"
@@ -20,7 +16,7 @@
     replace: "{{ downstream_value }}"
     #validate: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))'"
   when:
-    - is_path_to_file.stat.exists
+    - path_to_file is exists
 
 - name: "Override upstream with downstream defaults in '{{ path_to_file }}'"
   ansible.builtin.lineinfile:
@@ -29,7 +25,7 @@
     line: "{{ downstream_default.key }}: {{ downstream_default.value.default }}"
   when:
     - downstream_defaults | length > 0
-    - is_path_to_file.stat.exists
+    - path_to_file is exists
     - "'defaults/main.yml' in path_to_file"
     - downstream_default.value is defined and downstream_default.value.default is defined
     - not downstream_default.value.default | default('') is search('\{\{')
@@ -44,7 +40,7 @@
     line: "{{ downstream_default.key }}: \"{{ downstream_default.value.default }}\""
   when:
     - downstream_defaults | length > 0
-    - is_path_to_file.stat.exists
+    - path_to_file is exists
     - downstream_default.value is defined and downstream_default.value.default is defined
     - "'defaults/main.yml' in path_to_file"
     - downstream_default.value.default | default('') is search('\{\{')
