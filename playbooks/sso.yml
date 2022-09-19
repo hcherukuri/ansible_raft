@@ -8,23 +8,49 @@
     false_positives:
       - match: "sso[.]service[.]j2"
         replace: "keycloak.service.j2"
+        file: 'systemd[.]yml$'
       - match: "sso-sysconfig[.]j2"
         replace: "keycloak-sysconfig.j2"
+        file: 'systemd[.]yml$'
       - match: "sso-service[.]sh[.]j2"
         replace: "keycloak-service.sh.j2"
+        file: 'systemd[.]yml$'
       - match: 'cache-container name="sso" modules="org[.]sso[.]sso-model-infinispan"'
         replace: 'cache-container name="keycloak" modules="org.keycloak.keycloak-model-infinispan"'
+        file: 'xml.j2$'
       - match: "org[.]sso[.]"
         replace: "org.keycloak."
       - match: "sso[.]org"
         replace: "keycloak.org"
       - match: "sso-server-subsystem"
         replace: "keycloak-server-subsystem"
+        file: 'xml.j2$'
       - match: "[$][{]sso[.]"
         replace: "${keycloak."
       - match: "urn:jboss:domain:sso-server:1[.]1"
         replace: "urn:jboss:domain:keycloak-server:1.1"
+        file: 'xml.j2$'
       - match: "start_sso[.]yml"
         replace: "start_keycloak.yml"
+        file: '[.]yml$'
       - match: "stop_sso[.]yml"
         replace: "stop_keycloak.yml"
+        file: '[.]yml$'
+      - match: "java:jboss/infinispan/container/sso"
+        replace: "java:jboss/infinispan/container/keycloak"
+        file: 'xml.j2$'
+      - match: 'local-cache name="sso"'
+        replace: 'local-cache name="keycloak"'
+        file: 'xml.j2$'
+      - match: 'sso-database-update[.]sql'
+        replace: 'keycloak-database-update.sql'
+        file: 'xml.j2$'
+      - match: '/bin/add-user-sso'
+        replace: '/bin/add-user-keycloak'
+        file: 'main[.]yml$'
+      - match: 'community[.]general[.]sso'
+        replace: 'community.general.keycloak'
+        file: 'sso_realm.tasks.*[.]yml$'
+      - match: 'auth_sso_url:'
+        replace: 'auth_keycloak_url:'
+        file: 'sso_realm.tasks.*[.]yml$'
