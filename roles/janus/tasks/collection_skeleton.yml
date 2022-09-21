@@ -31,3 +31,10 @@
     - "{{ downstream_project }}/README.md"
     - "{{ downstream_project }}/CHANGELOG.rst"
     - "{{ downstream_project }}/requirements.yml"
+
+- name: Turn github doc links into automation hub relative links
+  ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
+  vars:
+    path_to_file: "{{ downstream_project }}/README.md"
+    upstream_value: "https://github.com/ansible-middleware/{{ downstream_name }}/blob/main/roles/{{ downstream_name }}"
+    downstream_value: "content/role/{{ downstream_name }}"
