@@ -28,7 +28,7 @@
         replace: "${infinispan."
         file: 'xml.j2$'
       - match: "[$][{]sys:data_grid[.]"
-        replace: "${infinispan."
+        replace: "${sys:infinispan."
         file: 'xml.j2$'
       - match: "schemas[/]data_grid-"
         replace: "schemas/infinispan-"
