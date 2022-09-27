@@ -45,3 +45,8 @@
     path_to_file: "{{ downstream_project }}/README.md"
     upstream_value: "https://github.com/ansible-middleware/{{ upstream_collection_name | default(downstream_name) }}/tree/main/roles/{{ downstream_name }}"
     downstream_value: "content/role/{{ downstream_name }}"
+
+- name: Remove docs/README symlink to root README
+  ansible.builtin.file:
+    state: absent
+    path: "{{ downstream_project }}/docs/README.md"
