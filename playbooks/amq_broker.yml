@@ -5,17 +5,3 @@
     upstream_collection_name: amq
     downstream_name: amq_broker
     project_git_url: "https://github.com/ansible-middleware/amq.git"
-    false_positives:
-      - match: "amq_broker[.]xsd"
-        replace: "activemq.xsd"
-      - match: "org[.]apache[.]amq_broker[.]"
-        replace: "org.apache.activemq."
-      - match: "hawtio[.]realm=amq_broker"
-        replace: "hawtio.realm=activemq"
-        file: '[.]yml$'
-      - match: "amq_broker[.]org"
-        replace: "activemq.org"
-      - match: "redhat[.]amq(?!_broker)"
-        replace: "redhat.amq_broker"
-      - match: "urn:amq_broker"
-        replace: "urn:activemq"

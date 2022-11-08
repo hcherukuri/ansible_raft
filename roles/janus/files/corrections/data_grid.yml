@@ -1,0 +1,30 @@
+---
+false_positives:
+  - match: "data_grid[.]service[.]j2"
+    replace: "infinispan.service.j2"
+    file: '[.]yml$'
+  - match: "data_grid[.]xml[.]j2"
+    replace: "infinispan.xml.j2"
+    file: '[.]yml$'
+  - match: "org[.]data_grid[.]"
+    replace: "org.infinispan."
+  - match: "data_grid[.]org"
+    replace: "infinispan.org"
+  - match: "urn:data_grid"
+    replace: "urn:infinispan"
+    file: 'xml.j2$'
+  - match: "<data_grid"
+    replace: "<infinispan"
+    file: 'xml.j2$'
+  - match: "</data_grid>"
+    replace: "</infinispan>"
+    file: 'xml.j2$'
+  - match: "[$][{]data_grid[.]"
+    replace: "${infinispan."
+    file: 'xml.j2$'
+  - match: "[$][{]sys:data_grid[.]"
+    replace: "${sys:infinispan."
+    file: 'xml.j2$'
+  - match: "schemas[/]data_grid-"
+    replace: "schemas/infinispan-"
+    file: 'xml.j2$'
