@@ -38,6 +38,7 @@
       when:
         - project_root_folder is defined
         - project_git_url is defined
+
   tasks:
     - name: "Run Janus."
       ansible.builtin.include_role:

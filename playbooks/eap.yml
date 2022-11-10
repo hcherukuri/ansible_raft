@@ -4,8 +4,3 @@
     upstream_name: wildfly
     downstream_name: eap
     project_git_url: "https://github.com/ansible-middleware/wildfly.git"
-    false_positives:
-      - match: "eap_install_workdir: /opt/eap"
-        replace: "eap_install_workdir: /opt"
-      - match: "eap[.]statistics-enabled"
-        replace: "wildfly.statistics-enabled"
