@@ -31,7 +31,7 @@
       when:
         - not downstream_repository_url is defined
 
-    - name: "Add release repository as downstream:"
+    - name: "Add release repository {{ downstream_repository_url }} as downstream:"
       ansible.builtin.include_role:
         name: git
         tasks_from: add_remote.yml
