@@ -4,3 +4,5 @@ false_positives:
    replace: "eap_install_workdir: /opt"
  - match: "eap[.]statistics-enabled"
    replace: "wildfly.statistics-enabled"
+ - match: "eap-configuration:"
+   replace: "wildfly-configuration:"
