@@ -16,3 +16,6 @@ false_positives:
   - match: "[/]amq_broker[/]broker[/]"
     replace: "/amq/broker/"
     file: "prepare.yml$"
+  - match: "amq_broker-broker-"
+    replace: "amq-broker-"
+    file: "prepare.yml$"
