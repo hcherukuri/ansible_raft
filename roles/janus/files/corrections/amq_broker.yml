@@ -16,3 +16,6 @@ false_positives:
   - match: "- amq_broker"
     replace: "- activemq"
     file: "main.yml$"
+  - match: "amq_broker[.]apache[.]org"
+    replace: "activemq.apache.org"
+    file: "README.md$"
