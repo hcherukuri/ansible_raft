@@ -12,3 +12,7 @@
     repo: "{{ project_git_url }}"
     dest: "{{ project_root_folder }}"
     version: "{{ project_git_version | default(omit) }}"
+  register: git_clone_res
+  retries: 3
+  delay: 15
+  until: not git_clone_res.failed
