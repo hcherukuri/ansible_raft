@@ -40,7 +40,7 @@
 
     - name: "Git clone {{ project_git_url }} into {{ project_root_folder }}"
       ansible.builtin.include_role:
-        name: git
+        name: middleware_automation.janus.git
         tasks_from: clone.yml
       when:
         - project_root_folder is defined
@@ -49,13 +49,13 @@
   tasks:
     - name: "Run Janus."
       ansible.builtin.include_role:
-        name: janus
+        name: middleware_automation.janus.janus
 
   post_tasks:
 
     - name: "Peform release (if requested)."
       ansible.builtin.include_role:
-        name: release
+        name: middleware_automation.janus.release
 
     - name: "Build collection for {{ downstream_name }}"
       command: ansible-galaxy collection build .
