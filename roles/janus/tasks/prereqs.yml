@@ -1,6 +1,0 @@
----
-- ansible.builtin.include_tasks: fastpackage.yml
-  vars:
-    package_name: "{{ item }}"
-  loop:
-    - rsync

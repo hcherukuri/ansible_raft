@@ -2,7 +2,14 @@
 - name: "Janus transformation process"
   hosts: localhost
   gather_facts: no
+  collections:
+    - middleware_automation.janus
   vars:
+    upstream_name: "{{ lookup('env', 'PROJECT_UPSTREAM_NAME') }}"
+    downstream_name: "{{ lookup('env', 'PROJECT_NAME') }}"
+    upstream_collection_name: "{{ lookup('env', 'UPSTREAM_COLLECTION_NAME') | default(omit) }}"
+    project_git_url: "{{ lookup('env', 'GIT_REPOSITORY_URL') }}"
+    project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') }}"
     upstream_namespace:  "middleware_automation"
     downstream_namespace: "redhat"
     workdir: "{{ lookup('env', 'PWD') }}"
@@ -33,7 +40,7 @@
 
     - name: "Git clone {{ project_git_url }} into {{ project_root_folder }}"
       ansible.builtin.include_role:
-        name: git
+        name: middleware_automation.janus.git
         tasks_from: clone.yml
       when:
         - project_root_folder is defined
@@ -42,13 +49,13 @@
   tasks:
     - name: "Run Janus."
       ansible.builtin.include_role:
-        name: janus
+        name: middleware_automation.janus.janus
 
   post_tasks:
 
     - name: "Peform release (if requested)."
       ansible.builtin.include_role:
-        name: release
+        name: middleware_automation.janus.release
 
     - name: "Build collection for {{ downstream_name }}"
       command: ansible-galaxy collection build .
