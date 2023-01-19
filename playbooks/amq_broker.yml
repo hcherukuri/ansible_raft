@@ -17,7 +17,7 @@
         replace: "urn:activemq"
       - match: "- amq_broker"
         replace: "- activemq"
-        file: "main.yml$"
+        file: "meta/main.yml$"
       - match: "amq_broker[.]apache[.]org"
         replace: "activemq.apache.org"
         file: "README.md$"
