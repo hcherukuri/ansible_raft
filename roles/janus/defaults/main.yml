@@ -1,0 +1,13 @@
+---
+upstream_name:
+downstream_name:
+upstream_collection_name: "{{ upstream_name }}"
+project_git_url:
+project_git_version:
+upstream_namespace: middleware_automation
+downstream_namespace: redhat
+workdir: "{{ lookup('env', 'PWD') }}"
+upstream_projects_dir: "{{ workdir }}/upstream"
+downstream_projects_dir: "{{ workdir }}/downstream"
+skip_setup: True
+post_processors_replacements: []
