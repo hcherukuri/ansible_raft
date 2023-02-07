@@ -6,7 +6,7 @@ galaxy_info:
   role_name: janus
   namespace: middleware_automation
   author: Romain Pelisse
-  description: 
+  description: Role designed to transform a collection from upstream to downstream
   company: Red Hat, Inc.
 
   license: Apache License 2.0
