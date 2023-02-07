@@ -11,4 +11,3 @@
 
 - name: "Execute git command '{{ git_command }}'"
   ansible.builtin.include_tasks: run_git_command.yml
-
