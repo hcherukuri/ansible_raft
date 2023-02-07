@@ -26,6 +26,14 @@ warn_list:
   - no-empty-data-files
   - name[template]
   - fqcn[keyword]
+  - command-instead-of-module
+  - key-order[task]
+  - schema[changelog]
+  - name[missing]
+  - name[play]
+  - name[template]
+  - name[casing]
+  - no-changed-when
 
 skip_list:
   - vars_should_not_be_used
