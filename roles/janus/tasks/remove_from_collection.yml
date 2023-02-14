@@ -12,4 +12,3 @@
     git rm -rf {{ file_to_remove }}
   args:
     chdir: "{{ downstream_project }}"
-  ignore_errors: true
