@@ -6,7 +6,7 @@
     quiet: True
     fail_msg: "Missing required parameter(s)."
 
-- name: "Ensure downtream project folder {{ downstream_project }} exists."
+- name: "Ensure downstream project folder {{ downstream_project }} exists."
   ansible.builtin.file:
     path: "{{ downstream_project }}"
     state: directory
@@ -17,12 +17,18 @@
     src: "{{ project_root_folder }}/"
     dest: "{{ downstream_project }}"
 
+- name: Check if .github folders exist in {{ downstream_project }}."
+  ansible.builtin.stat:
+    path: "{{ downstream_project }}/.github"
+  register: github_dir
+
 - name: "Delete .github folders in {{ downstream_project }}."
   ansible.builtin.include_tasks: remove_from_collection.yml
   vars:
     file_to_remove: "{{ item }}"
   loop:
     - "{{ downstream_project }}/.github"
+  when: github_dir.stat.exists
 
 - ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
   vars:
@@ -31,6 +37,7 @@
     - "{{ downstream_project }}/README.md"
     - "{{ downstream_project }}/CHANGELOG.rst"
     - "{{ downstream_project }}/requirements.yml"
+    - "{{ downstream_project }}/meta/runtime.yml"
 
 - name: Turn github doc links into automation hub relative links
   ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
@@ -45,6 +52,20 @@
     path_to_file: "{{ downstream_project }}/README.md"
     upstream_value: "https://github.com/ansible-middleware/{{ upstream_collection_name | default(downstream_name) }}/tree/main/roles/{{ downstream_name }}"
     downstream_value: "content/role/{{ downstream_name }}"
+
+- name: Generate a list of Python plugins
+  ansible.builtin.find:
+    paths: "{{ downstream_project }}/plugins/"
+    file_type: file
+    patterns: '*.py'
+    recurse: yes
+  register: plugin_results
+
+- name: Update plugins (ensures EXAMPLES will have correct FQCNs)
+  ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
+  vars:
+    path_to_file: "{{ item.path }}"
+  loop:  "{{ plugin_results.files }}"
 
 - name: Remove docs/README symlink to root README
   ansible.builtin.file:
