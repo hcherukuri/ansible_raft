@@ -11,6 +11,8 @@
       - { upstream_name: 'infinispan', downstream_name: 'data_grid' }
       - { upstream_name: 'keycloak', downstream_name: 'sso' }
       - { upstream_name: 'amq', downstream_name: 'amq_broker' }
+      - { upstream_name: 'amq_streams', downstream_name: 'amq_streams' }
+      - { upstream_name: 'common', downstream_name: 'runtimes_common' }
 
 - ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
   vars:
