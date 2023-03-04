@@ -32,7 +32,7 @@
     loop_var: file_to_update
   when: file_to_update != 'meta/argument_specs.yml'
 
-- name: "Rename vars in main.yml in vars,defaults and meta"
+- name: "Rename vars in vars,defaults and meta"
   ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
   vars:
     path_to_file: "{{ file_to_update.path }}"
