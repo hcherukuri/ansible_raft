@@ -1,7 +1,5 @@
 ---
 - ansible.builtin.include_tasks: utils/check_file_exists.yml
-  vars:
-    path_to_file: "{{ downstream_galaxy_yml }}"
 
 - ansible.builtin.set_fact:
     upstream_downstream_collections_map:
