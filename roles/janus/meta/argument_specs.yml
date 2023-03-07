@@ -50,3 +50,7 @@ argument_specs:
                 type: 'list'
                 default: []
                 description: "List of { match, replace, file } dicts for post processing replacements. `match` and `replace` are regexes for string replacements while `file` is a regex matcher filtering filenames to post-process"
+            upstream_downstream_collections_map:
+                type: 'list'
+                default: ""
+                description: "List of dependency mappings {upstream_name, downstream_name} for renaming in tasks, galaxy.yml and requirements.yml"

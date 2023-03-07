@@ -21,3 +21,10 @@
     - { regexp: "^(\\w*: )((?<!issues: )|(?<!repository: )){{ upstream_namespace }}", replace: "\\1{{ downstream_namespace }}" }
 
 - ansible.builtin.include_tasks: roles/replace_deps_to_upstream_name_to_downstream.yml
+  vars:
+    path_to_file: "{{ file_to_update }}"
+  loop:
+    - "{{ downstream_galaxy_yml }}"
+    - "{{ downstream_project }}/requirements.yml"
+  loop_control:
+    loop_var: file_to_update

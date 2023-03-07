@@ -30,14 +30,27 @@
     - "{{ downstream_project }}/.github"
   when: github_dir.stat.exists
 
-- ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
+- ansible.builtin.include_tasks: roles/replace_deps_to_upstream_name_to_downstream.yml
   vars:
-    path_to_file: "{{ item }}"
+    path_to_file: "{{ filepath }}"
   loop:
     - "{{ downstream_project }}/README.md"
     - "{{ downstream_project }}/CHANGELOG.rst"
     - "{{ downstream_project }}/requirements.yml"
     - "{{ downstream_project }}/meta/runtime.yml"
+  loop_control:
+    loop_var: filepath
+
+- ansible.builtin.include_tasks: utils/replace_name_and_namespace.yml
+  vars:
+    path_to_file: "{{ filepath }}"
+  loop:
+    - "{{ downstream_project }}/README.md"
+    - "{{ downstream_project }}/CHANGELOG.rst"
+    - "{{ downstream_project }}/requirements.yml"
+    - "{{ downstream_project }}/meta/runtime.yml"
+  loop_control:
+    loop_var: filepath
 
 - name: Turn github doc links into automation hub relative links
   ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
