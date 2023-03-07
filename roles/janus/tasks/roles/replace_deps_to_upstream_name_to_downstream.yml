@@ -1,10 +1,15 @@
 ---
-- ansible.builtin.include_tasks: utils/check_file_exists.yml
+- name: Replace dependency map in collection files
+  block:
+    - ansible.builtin.include_tasks: utils/check_file_exists.yml
 
-- ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
-  vars:
-    upstream_value: "{{ upstream_namespace }}.{{ replacement.upstream_name }}"
-    downstream_value: "{{ downstream_namespace }}.{{ replacement.downstream_name }}"
-  loop: "{{ upstream_downstream_collections_map }}"
-  loop_control:
-    loop_var: replacement
+    - ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
+      vars:
+        upstream_value: "{{ upstream_namespace }}.{{ replacement.upstream_name }}"
+        downstream_value: "{{ downstream_namespace }}.{{ replacement.downstream_name }}"
+      loop: "{{ upstream_downstream_collections_map }}"
+      loop_control:
+        loop_var: replacement
+  rescue:
+    - ansible.builtin.debug:
+        msg: "File `{{ path_to_file }}` not found: no depmap replacement done."
