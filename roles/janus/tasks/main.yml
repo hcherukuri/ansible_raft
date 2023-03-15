@@ -13,6 +13,8 @@
   vars:
     path_to_docs_folder: "{{ downstream_project }}/docs"
 
+- ansible.builtin.include_tasks: plugins/main.yml
+
 - ansible.builtin.include_tasks: roles/main.yml
 
 - ansible.builtin.include_tasks: playbooks/main.yml
