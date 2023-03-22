@@ -7,6 +7,7 @@ project_git_version:
 upstream_namespace: middleware_automation
 downstream_namespace: redhat
 workdir: "{{ lookup('env', 'PWD') }}"
+upstream_organisation: 'ansible-middleware'
 upstream_projects_dir: "{{ workdir }}/upstream"
 downstream_projects_dir: "{{ workdir }}/downstream"
 skip_setup: True
