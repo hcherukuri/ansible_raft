@@ -54,3 +54,7 @@ argument_specs:
                 type: 'list'
                 default: ""
                 description: "List of dependency mappings {upstream_name, downstream_name} for renaming in tasks, galaxy.yml and requirements.yml"
+            upstream_organisation:
+                type: 'str'
+                default: 'ansible-middleware'
+                description: 'github.com organisation for upstream repositories'

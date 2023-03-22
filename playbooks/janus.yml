@@ -7,7 +7,7 @@
   vars:
     upstream_name: "{{ lookup('env', 'PROJECT_UPSTREAM_NAME') }}"
     downstream_name: "{{ lookup('env', 'PROJECT_NAME') }}"
-    upstream_collection_name: "{{ lookup('env', 'UPSTREAM_COLLECTION_NAME') | default(omit) }}"
+    upstream_collection_name: "{{ lookup('env', 'UPSTREAM_COLLECTION_NAME') | default(upstream_name) }}"
     project_git_url: "{{ lookup('env', 'GIT_REPOSITORY_URL') }}"
     project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') }}"
     upstream_namespace:  "middleware_automation"
@@ -19,6 +19,7 @@
     skip_setup: True
   pre_tasks:
     - name: "Ensure all required parameters have been provided"
+      tags: always
       ansible.builtin.assert:
         that:
           - downstream_name is defined
@@ -28,6 +29,7 @@
         fail_msg: "Missing required parameter(s)."
 
     - name: "Determine full path to project folder (if not provided)."
+      tags: always
       ansible.builtin.set_fact:
         project_root_folder: "{{ lookup('env', 'PWD') }}/upstream/{{ upstream_name }}.git"
       when:
@@ -35,6 +37,7 @@
         - upstream_name is defined
 
     - name: "Define path to downstream project"
+      tags: always
       ansible.builtin.set_fact:
         downstream_project: "{{ downstream_projects_dir }}/{{ downstream_name }}"
 
@@ -50,6 +53,7 @@
     - name: "Run Janus."
       ansible.builtin.include_role:
         name: middleware_automation.janus.janus
+      tags: always
 
   post_tasks:
 
