@@ -12,11 +12,11 @@ downstream_projects_dir: "{{ workdir }}/downstream"
 skip_setup: True
 post_processors_replacements: []
 upstream_downstream_collections_map:
-  - { upstream_name: 'redhat_csp_download', downstream_name: 'redhat_csp_download' }
-  - { upstream_name: 'jws', downstream_name: 'jws' }
-  - { upstream_name: 'wildfly', downstream_name: 'eap' }
-  - { upstream_name: 'infinispan', downstream_name: 'data_grid' }
-  - { upstream_name: 'keycloak', downstream_name: 'sso' }
-  - { upstream_name: 'amq', downstream_name: 'amq_broker' }
-  - { upstream_name: 'amq_streams', downstream_name: 'amq_streams' }
-  - { upstream_name: 'common', downstream_name: 'runtimes_common' }
+  - { upstream_name: 'middleware_automation.redhat_csp_download', downstream_name: 'redhat.redhat_csp_download' }
+  - { upstream_name: 'middleware_automation.jws', downstream_name: 'redhat.jws' }
+  - { upstream_name: 'middleware_automation.wildfly', downstream_name: 'redhat.eap' }
+  - { upstream_name: 'middleware_automation.infinispan', downstream_name: 'redhat.data_grid' }
+  - { upstream_name: 'middleware_automation.keycloak', downstream_name: 'redhat.sso' }
+  - { upstream_name: 'middleware_automation.amq', downstream_name: 'redhat.amq_broker' }
+  - { upstream_name: 'middleware_automation.amq_streams', downstream_name: 'redhat.amq_streams' }
+  - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
