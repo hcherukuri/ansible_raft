@@ -10,7 +10,6 @@
   ansible.builtin.yum:
     name: rsync
     use_backend: dnf
-  become: yes
 
 - name: "rsync {{ src }} to {{ dest }}"
   ansible.posix.synchronize:
