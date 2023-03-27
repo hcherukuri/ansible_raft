@@ -8,7 +8,7 @@
 
 - name: Replace dependency map in collection files
   block:
-    - ansible.builtin.package:
+    - ansible.builtin.yum:
         name: pandoc
       become: yes
     - ansible.builtin.command: >
