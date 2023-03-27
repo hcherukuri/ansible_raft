@@ -11,6 +11,7 @@
     - ansible.builtin.yum:
         name: pandoc
         use_backend: dnf
+        become: yes
     - ansible.builtin.command: >
         pandoc --from=rst --to=markdown_strict -o {{ path_to_file | regex_replace('[.]rst$', '.md')}} {{ path_to_file }}
   rescue:
