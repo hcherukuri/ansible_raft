@@ -18,13 +18,18 @@
     dest: "{{ downstream_project }}"
 
 - name: "Load downstream dependencies from requirements.yml"
-  ansible.builtin.slurp:
-    src: "{{ downstream_project }}/requirements.yml"
-  register: used_deps
+  block:
+    - name: "Load requirements.yml content"
+      ansible.builtin.slurp:
+        src: "{{ downstream_project }}/requirements.yml"
+      register: used_deps
 
-- name: Intersect dependency map with declared dependencies
-  ansible.builtin.set_fact:
-    depmap: "{{ (depmap | default([])) + (used_deps['content'] | b64decode | from_yaml)['collections'] | map(attribute='name') }}"
+    - name: Intersect dependency map with declared dependencies
+      ansible.builtin.set_fact:
+        depmap: "{{ (depmap | default([])) + (used_deps['content'] | b64decode | from_yaml)['collections'] | map(attribute='name') | default([]) }}"
+  rescue:
+    - ansible.builtin.debug:
+        msg: "Couldn't load dependency map from requirements.yml: file does not exist"
 
 - name: Check if .github folders exist in {{ downstream_project }}."
   ansible.builtin.stat:

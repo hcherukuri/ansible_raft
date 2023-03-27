@@ -10,7 +10,7 @@
       loop: "{{ upstream_downstream_collections_map }}"
       loop_control:
         loop_var: replacement
-      when: replacement.upstream_name in depmap
+      when: replacement.upstream_name in (depmap | default([]))
   rescue:
     - ansible.builtin.debug:
         msg: "File `{{ path_to_file }}` not found: no depmap replacement done."
