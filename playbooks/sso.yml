@@ -45,7 +45,8 @@
         replace: '/bin/add-user-keycloak'
         file: 'main[.]yml$'
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
-    downstream_placeholder_delete: []
+    downstream_placeholder_delete:
+      - build_status
     # anything inside <!--start {{ <downstream_placeholder>_content }} --> and <!--end {{ <downstream_placeholder>_content }} --> will be replaced with content
     downstream_placeholder_content:
       - placeholder: galaxy_download
