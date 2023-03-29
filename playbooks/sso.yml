@@ -60,9 +60,9 @@
         content: |
           ## Support
           
-          redhat.sso collection v{{ galaxy_version | default('0.0.0-dev') }} is a Beta release and for [Technical Preview](https://access.redhat.com/support/offerings/techpreview).
-          If you have any issues or questions related to collection, please don't hesitate to contact us on Ansible-middleware-core@redhat.com or open an issue on 
-          https://github.com/ansible-middleware/keycloak/issues
+          redhat.sso collection v{{ galaxy_version | default('0.0.0-dev') }} is for [Technical Preview](https://access.redhat.com/support/offerings/techpreview).
+          If you have any issues or questions related to collection, please don't hesitate to contact us on <Ansible-middleware-core@redhat.com> or open an issue on 
+          <https://github.com/ansible-middleware/keycloak/issues>
       - placeholder: rhn_credentials
         content: |
           ## Downloading from the Customer Portal
@@ -74,3 +74,8 @@
           ```
 
           The downloaded file will be stored in the controller working directory, and then distributed to target nodes.
+
+          When patching is requested, via the `sso_apply_patches` variable, the most recently published cumulative patch will be installed; to use a specific patch version instead,
+          set it with the `sso_patch_version` variable.
+
+          NOTE: downgrading patches is not supported.
