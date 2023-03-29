@@ -2,7 +2,7 @@
 - name: Turn github PR links into automation hub links to github (3)
   ansible.builtin.include_tasks: utils/rename_vars_in_file.yml
   vars:
-    path_to_file: "{{ downstream_project }}/CHANGELOG.md"
+    path_to_file: "{{ downstream_project }}/docs/CHANGELOG.md"
     upstream_value: "https://github.com/{{ upstream_organisation }}/{{ downstream_name }}"
     downstream_value: "https://github.com/{{ upstream_organisation }}/{{ upstream_collection_name | default(upstream_name, true) }}"
 
