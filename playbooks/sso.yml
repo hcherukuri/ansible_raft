@@ -11,7 +11,7 @@
       - match: "sso-service[.]sh[.]j2"
         replace: "keycloak-service.sh.j2"
         file: 'systemd[.]yml$'
-      - match: 'cache-container name="sso" modules="org[.]sso[.]sso-model-infinispan"'
+      - match: 'cache-container name="sso"( modules="org[.]sso[.]sso-model-infinispan")?'
         replace: 'cache-container name="keycloak" modules="org.keycloak.keycloak-model-infinispan"'
         file: 'xml.j2$'
       - match: "org[.]sso[.]"
