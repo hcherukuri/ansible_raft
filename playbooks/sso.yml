@@ -44,6 +44,9 @@
       - match: '/bin/add-user-sso'
         replace: '/bin/add-user-keycloak'
         file: 'main[.]yml$'
+    galaxy: 
+      documentation: https://access.redhat.com/documentation/en-us/red_hat_single_sign-on
+      homepage: https://access.redhat.com/products/red-hat-single-sign-on
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status

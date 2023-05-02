@@ -21,6 +21,9 @@
       - match: "amq_broker[.]apache[.]org"
         replace: "activemq.apache.org"
         file: "README.md$"
+    galaxy: 
+      documentation: https://access.redhat.com/documentation/en-us/red_hat_amq_broker
+      homepage: https://access.redhat.com/products/red-hat-amq
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status
