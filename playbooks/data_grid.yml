@@ -30,6 +30,9 @@
       - match: "schemas[/]data_grid-"
         replace: "schemas/infinispan-"
         file: 'xml.j2$'
+    galaxy: 
+      documentation: https://access.redhat.com/documentation/en-us/red_hat_data_grid
+      homepage: https://access.redhat.com/products/red-hat-data-grid
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status
