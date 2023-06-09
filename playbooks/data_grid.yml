@@ -58,8 +58,8 @@
 
           The `redhat.data_grid.data_grid` role supports downloading and installing from the Red Hat Customer Portal, when the following variables are defined:
           ```
-          rhn_username{{':'}} '<customer_portal_username>'
-          rhn_password{{':'}} '<customer_portal_password>'
+          rhn_username{{':'}} '<service_account_clientid>'
+          rhn_password{{':'}} '<service_account_secret>'
           ```
 
           The downloaded file will be stored in the controller working directory, and then distributed to target nodes.
