@@ -47,9 +47,9 @@
         content: |
           #### Downloading from the Customer Portal
 
-          The `redhat.amq.amq_broker` role supports downloading and installing from the Red Hat Customer Portal using credentials associated to a service account. After
-          login in the customer portal and navigating to the hybrid cloud console, select the [services account tab](https://console.redhat.com/application-services/service-accounts)
-          to create one, if needed. Client ID and Client secret associated to the service account needs to be provided with the following variables are defined:
+          The `amq_broker` role supports downloading and installing from the Red Hat Customer Portal using credentials associated to a service account. After having
+          authenticated in the customer portal, navigate to the hybrid cloud console, and select the [services account tab](https://console.redhat.com/application-services/service-accounts)
+          to create one, if needed. Client ID and Client Secret associated to the service account need to be provided to the collection using the following variables:
           ```
           rhn_username{{':'}} '<client_id>'
           rhn_password{{':'}} '<client_secret>'
