@@ -45,6 +45,11 @@
           Before using the collection, you need to setup Ansible Automation Hub as galaxy server; then install it via the CLI:
 
               ansible-galaxy collection install redhat.data_grid
+      - placeholder: upstream_downstream
+        content: |
+          This collection can be used to manage the Red Hat product [Red Hat DataGrid](https://www.redhat.com/en/technologies/jboss-middleware/data-grid), which can 
+          also be used as remote caches for [Red Hat Single Sign-On](https://access.redhat.com/products/red-hat-single-sign-on) or 
+          [Red Hat JBoss EAP](https://www.redhat.com/en/technologies/jboss-middleware/application-platform).
       - placeholder: support
         content: |
           ## Support
