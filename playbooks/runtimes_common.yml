@@ -6,6 +6,8 @@
         replace: "add_file_common_args"
       - match: "load_file_runtimes_common_arguments"
         replace: "load_file_common_arguments"
+      - match: "ansible[.]module_utils[.]runtimes_common"
+        replace: "ansible.module_utils.common"
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status
