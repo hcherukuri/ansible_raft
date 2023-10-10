@@ -60,6 +60,11 @@
       - build_status
     # anything inside <!--start {{ <downstream_placeholder>_content }} --> and <!--end {{ <downstream_placeholder>_content }} --> will be replaced with content
     downstream_placeholder_content:
+      - placeholder: ansible_version
+        content: |
+          Red Hat has tested this collection against Ansible versions 2.13.0 or later.
+
+          Red Hat might test the plug-ins and modules that are within a collection with specific Ansible versions only. A collection can contain metadata that identifies these Ansible versions.
       - placeholder: galaxy_download
         content: |
           ### Installing the Collection from Automation Hub
