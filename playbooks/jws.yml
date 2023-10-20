@@ -19,11 +19,7 @@
     downstream_placeholder_content:
       - placeholder: ansible_version
         content: |
-<<<<<<< Updated upstream
-          Red Hat has tested this collection against Ansible versions 2.13.0 or later.
-=======
           Red Hat has tested this collection against Ansible versions 2.14.0 or later.
->>>>>>> Stashed changes
 
           Red Hat might test the plug-ins and modules that are within a collection with specific Ansible versions only. A collection can contain metadata that identifies these Ansible versions.
       - placeholder: galaxy_download
