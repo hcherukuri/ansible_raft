@@ -8,6 +8,9 @@
     project_git_url: https://github.com/ansible-middleware/amq_streams.git
     upstream_downstream_collections_map:
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
+    post_processors_replacements:
+     - match: "amq_streams_common_redhat_enabled: false"
+       replace: "amq_streams_common_redhat_enabled: true"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_amq_streams
       homepage: https://access.redhat.com/products/red-hat-amq-streams
