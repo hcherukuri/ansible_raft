@@ -12,7 +12,7 @@
      - match: "amq_streams_common_redhat_enabled: false"
        replace: "amq_streams_common_redhat_enabled: true"
      - match: "amq_streams_common_download_dir: /tmp"
-       replace: "amq_streams_common_download_dir: /opt"
+       replace: "amq_streams_common_download_dir: {{ lookup('env', 'HOME') }}"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_amq_streams
       homepage: https://access.redhat.com/products/red-hat-amq-streams
