@@ -13,6 +13,8 @@
        replace: "amq_streams_common_redhat_enabled: true"
      - match: "amq_streams_common_download_dir: /tmp"
        replace: "amq_streams_common_download_dir: {{ lookup('env', 'HOME') }}"
+     - match: "amq_streams_common_prereqs_dependencies: ['tar']"
+       replace: "amq_streams_common_prereqs_dependencies: ['unzip']"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_amq_streams
       homepage: https://access.redhat.com/products/red-hat-amq-streams
