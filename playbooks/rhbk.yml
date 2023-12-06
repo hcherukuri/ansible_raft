@@ -91,6 +91,9 @@
       - match: "rhbk-sysconfig[.]j2"
         replace: "keycloak-sysconfig.j2"
         file: 'systemd[.]yml$'
+      - match: "rhbk.conf[.]j2"
+        replace: "keycloak.conf.j2"
+        file: 'systemd[.]yml$'
       - match: "org[.]rhbk[.]"
         replace: "org.keycloak."
       - match: "rhbk[.]org"
