@@ -84,7 +84,17 @@
     upstream_projects_dir: "{{ workdir }}/intermediate"
     upstream_downstream_collections_map:
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
-    post_processors_replacements: []
+    post_processors_replacements:
+      - match: "rhbk.]service[.]j2"
+        replace: "keycloak.service.j2"
+        file: 'systemd[.]yml$'
+      - match: "rhbk-sysconfig[.]j2"
+        replace: "keycloak-sysconfig.j2"
+        file: 'systemd[.]yml$'
+      - match: "org[.]rhbk[.]"
+        replace: "org.keycloak."
+      - match: "rhbk[.]org"
+        replace: "keycloak.org"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_build_of_keycloak/
       homepage: https://access.redhat.com/products/red-hat-build-of-keycloak/
