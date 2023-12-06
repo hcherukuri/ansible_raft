@@ -19,8 +19,8 @@
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
     post_processors_replacements: []
     galaxy:
-      documentation: https://access.redhat.com/documentation/en-us/red_hat_single_sign-on
-      homepage: https://access.redhat.com/products/red-hat-single-sign-on
+      documentation: https://access.redhat.com/documentation/en-us/red_hat_build_of_keycloak/
+      homepage: https://access.redhat.com/products/red-hat-build-of-keycloak/
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status
@@ -39,7 +39,12 @@
 
           redhat.rhbk collection v{{ galaxy_version | default('0.0.0-dev') }} is for [Technical Preview](https://access.redhat.com/support/offerings/techpreview).
           If you have any issues or questions related to collection, please don't hesitate to contact us on <Ansible-middleware-core@redhat.com> or open an issue on
-          <https://github.com/ansible-middleware/keycloak/issues>
+          <https://github.com/ansible-middleware/keycloak/issues> referring to the keycloak_quarkus role
+      - placeholder: roles_paths
+        content: |
+          ### Included roles
+          * [`rhbk`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk/): role for installing the service.
+          * [`rhbk_realm`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
       - placeholder: rhn_credentials
         content: |
           #### Downloading from the Customer Portal
@@ -81,8 +86,8 @@
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
     post_processors_replacements: []
     galaxy:
-      documentation: https://access.redhat.com/documentation/en-us/red_hat_single_sign-on
-      homepage: https://access.redhat.com/products/red-hat-single-sign-on
+      documentation: https://access.redhat.com/documentation/en-us/red_hat_build_of_keycloak/
+      homepage: https://access.redhat.com/products/red-hat-build-of-keycloak/
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status
@@ -95,13 +100,18 @@
           Before using the collection, you need to setup Ansible Automation Hub as galaxy server; then install it via the CLI:
 
               ansible-galaxy collection install redhat.rhbk
+      - placeholder: roles_paths
+        content: |
+          ### Included roles
+          * [`rhbk`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk/): role for installing the service.
+          * [`rhbk_realm`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
       - placeholder: support
         content: |
           ## Support
 
           redhat.rhbk collection v{{ galaxy_version | default('0.0.0-dev') }} is for [Technical Preview](https://access.redhat.com/support/offerings/techpreview).
           If you have any issues or questions related to collection, please don't hesitate to contact us on <Ansible-middleware-core@redhat.com> or open an issue on
-          <https://github.com/ansible-middleware/keycloak/issues>
+          <https://github.com/ansible-middleware/keycloak/issues> referring to the keycloak_quarkus role
       - placeholder: rhn_credentials
         content: |
           #### Downloading from the Customer Portal
