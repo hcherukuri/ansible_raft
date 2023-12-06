@@ -85,7 +85,7 @@
     upstream_downstream_collections_map:
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
     post_processors_replacements:
-      - match: "rhbk.]service[.]j2"
+      - match: "rhbk[.]service[.]j2"
         replace: "keycloak.service.j2"
         file: 'systemd[.]yml$'
       - match: "rhbk-sysconfig[.]j2"
