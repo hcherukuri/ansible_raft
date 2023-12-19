@@ -14,7 +14,7 @@
      - match: "amq_streams_common_prereqs_dependencies: .*$"
        replace: "amq_streams_common_prereqs_dependencies: ['unzip']"
      - match: "amq_streams_common_download_dir: .*$"
-       replace: '/opt'
+       replace: 'amq_streams_common_download_dir: /opt'
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_amq_streams
       homepage: https://access.redhat.com/products/red-hat-amq-streams
