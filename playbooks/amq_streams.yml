@@ -17,6 +17,8 @@
       documentation: https://access.redhat.com/documentation/en-us/red_hat_amq_streams
       homepage: https://access.redhat.com/products/red-hat-amq-streams
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
+    excluded_roles_from_sownstream:
+      - roles/amq_streams_exporter
     downstream_placeholder_delete:
       - build_status
     # anything inside <!--start {{ <downstream_placeholder>_content }} --> and <!--end {{ <downstream_placeholder>_content }} --> will be replaced with content
