@@ -8,6 +8,7 @@
     project_git_url: "https://github.com/ansible-middleware/{{ upstream_name }}.git"
     upstream_downstream_collections_map:
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
+      - { upstream_name: 'fedora.linux_system_roles', downstream_name: 'redhat.rhel_system_roles' }
     post_processors_replacements:
       - match: "add_file_runtimes_common_args"
         replace: "add_file_common_args"
