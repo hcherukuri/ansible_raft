@@ -5,8 +5,8 @@
     downstream_name: eap
     downstream_namespace: 'redhat'
     upstream_namespace: 'middleware_automation'
-    project_git_url: https://github.com/ansible-middleware/wildfly.git
-    project_git_version: main
+    project_git_url: "{{ lookup('env', 'GIT_REPOSITORY_URL') | default('https://github.com/ansible-middleware/wildfly.git', true) }}"
+    project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') | default('main', true) }}"
     case_insensitive_match: true
 
     upstream_downstream_collections_map:
