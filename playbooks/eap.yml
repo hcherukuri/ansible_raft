@@ -26,6 +26,10 @@
        replace: "eap_prospero_name: jboss-eap-installation-manager"
      - match: "eap_prospero_profile_name: eap"
        replace: "eap_prospero_profile_name: eap-8.0"
+     - match: "/opt/wildfly-1/wildfly-31.0.1.Final/"
+       replace: "/opt/eap-1/jboss-eap-7.4/"
+
+
 
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform
