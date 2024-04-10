@@ -6,6 +6,7 @@
     downstream_namespace: 'redhat'
     upstream_namespace: 'middleware_automation'
     project_git_url: "https://github.com/ansible-middleware/{{ upstream_name }}.git"
+    project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') | default('main') }}"
     upstream_downstream_collections_map:
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
     galaxy:
@@ -23,7 +24,7 @@
           * [`jbcs`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/jbcs/content/role/jbcs/): role for installing the service.
       - placeholder: ansible_version
         content: |
-          Red Hat has tested this collection against Ansible versions 2.13.0 or later.
+          Red Hat has tested this collection against Ansible versions 2.14.0 or later.
 
           Red Hat might test the plug-ins and modules that are within a collection with specific Ansible versions only. A collection can contain metadata that identifies these Ansible versions.
       - placeholder: galaxy_download
