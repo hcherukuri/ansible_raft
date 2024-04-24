@@ -60,8 +60,8 @@
       - placeholder: roles_paths
         content: |
           ### Included roles
-          * [`rhbk`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk/): role for installing the service.
-          * [`rhbk_realm`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
+          * [`rhbk`](content/role/rhbk/): role for installing the service.
+          * [`rhbk_realm`](content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
       - placeholder: rhbk_realm_playbook
         content: |
           The below example playbook can creates or updates provided realm, user federation(s), client(s), client role(s) and client user(s).
@@ -146,7 +146,7 @@
       - match: "rhbk-sysconfig[.]j2"
         replace: "keycloak-sysconfig.j2"
         file: 'systemd[.]yml$'
-      - match: "rhbk[.]conf"
+      - match: "rhbk[.]conf\b"
         replace: "keycloak.conf"
       - match: "org[.]rhbk[.]"
         replace: "org.keycloak."
@@ -170,8 +170,8 @@
       - placeholder: roles_paths
         content: |
           ### Included roles
-          * [`rhbk`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk/): role for installing the service.
-          * [`rhbk_realm`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
+          * [`rhbk`](content/role/rhbk/): role for installing the service.
+          * [`rhbk_realm`](content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
       - placeholder: support
         content: |
           ## Support
