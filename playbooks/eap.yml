@@ -20,6 +20,8 @@
        replace: "wildfly-configuration:"
      - match: "repo1.maven.org/maven2/org/eap/prospero"
        replace: "repo1.maven.org/maven2/org/wildfly/prospero"
+     - match: "files/wildfly-custom.xml"
+       replace: "files/eap-custom.xml"
 
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform
