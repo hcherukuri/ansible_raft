@@ -151,7 +151,8 @@
         file: 'main[.]yml$'
       - match: "rhbk[.]fact"
         replace: "keycloak.fact"
-        file: "bootstrapped[.]yml$"
+      - match: "ansible_local[.]rhbk"
+        replace: "ansible_local.keycloak"
       - match: "org[.]rhbk[.]"
         replace: "org.keycloak."
       - match: "rhbk[.]org"
