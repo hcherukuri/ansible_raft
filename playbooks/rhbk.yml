@@ -149,6 +149,9 @@
       - match: "- rhbk[.]conf"
         replace: "- keycloak.conf"
         file: 'main[.]yml$'
+      - match: "rhbk[.]fact"
+        replace: "keycloak.fact"
+        file: "bootstrapped[.]yml$"
       - match: "org[.]rhbk[.]"
         replace: "org.keycloak."
       - match: "rhbk[.]org"
