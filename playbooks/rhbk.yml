@@ -72,6 +72,9 @@
       - match: "spid-rhbk-provider"
         replace: "spid-keycloak-provider"
         file: "converge.yml$"
+      - match: "org.rhbk:rhbk-kerberos-federation"
+        replace: "org.keycloak:keycloak-kerberos-federation"
+        file: "converge.yml$"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_build_of_keycloak/
       homepage: https://access.redhat.com/products/red-hat-build-of-keycloak/
