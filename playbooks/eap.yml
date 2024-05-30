@@ -42,13 +42,7 @@
     downstream_placeholder_content:
       - placeholder: roles_paths
         content: |
-          ### Roles
-          * [eap_install](content/role/eap_install/): download and install
-          * [eap_systemd](content/role/eap_systemd/): configure systemd unit
-          * [eap_driver](content/role/eap_driver/): install additional driver modules (ie. JDBC)
-          * [eap_utils](content/role/eap_utils/): utilities related to EAP
-          * [eap_validation](content/role/eap_validation/): validate deployed installation
-          * [eap_uninstall](content/role/eap_uninstall/): restore status pre wildfly_install
+
       - placeholder: galaxy_download
         content: |
           ### Installing the Collection from Automation Hub

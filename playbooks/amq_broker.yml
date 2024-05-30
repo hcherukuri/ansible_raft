@@ -45,9 +45,7 @@
     downstream_placeholder_content:
       - placeholder: roles_paths
         content: |
-          ### Roles:
 
-          * [`amq_broker`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/amq_broker/content/role/amq_broker/): Perform installation and configuration
       - placeholder: galaxy_download
         content: |
           ### Installing the Collection from Automation Hub
