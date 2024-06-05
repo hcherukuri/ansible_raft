@@ -92,9 +92,7 @@
               ansible-galaxy collection install redhat.rhbk
       - placeholder: roles_paths
         content: |
-          ### Included roles
-          * [`rhbk`](/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk/): role for installing the service.
-          * [`rhbk_realm`](/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
+
       - placeholder: support
         content: |
           ## Support
