@@ -177,6 +177,9 @@
       - placeholder: description
         content: |
           Collection to install and configure [Red Hat Build of Keycloak](https://access.redhat.com/products/red-hat-build-of-keycloak).
+      - placeholder: description_realm
+        content: |
+          Create realms and clients in [Red Hat Build of Keycloak](https://access.redhat.com/products/red-hat-build-of-keycloak).
   tasks:
     - ansible.builtin.include_role:
         name: community.fqcn_migration.fqcn_migration
