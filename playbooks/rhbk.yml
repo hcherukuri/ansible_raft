@@ -95,7 +95,10 @@
               ansible-galaxy collection install redhat.rhbk
       - placeholder: roles_paths
         content: |
+          ### Included roles
 
+          * [`rhbk`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk/): role for installing the service.
+          * [`rhbk_realm`](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk_realm/): role for configuring a realm, user federation(s), clients and users, in an installed service.
       - placeholder: support
         content: |
           ## Support
@@ -132,7 +135,7 @@
 
           Both playbooks include the `rhbk` role, with different settings, as described in the following sections.
 
-          For full service configuration details, refer to the [rhbk role README]().
+          For full service configuration details, refer to the [rhbk role README](/ansible/automation-hub/repo/published/redhat/rhbk/content/role/rhbk/).
       - placeholder: rhbk_realm_playbook
         content: |
           The below example playbook can creates or updates provided realm, user federation(s), client(s), client role(s) and client user(s).
@@ -171,6 +174,9 @@
       - placeholder: license
         content: |
           See [LICENSE](https://github.com/ansible-middleware/keycloak/blob/main/LICENSE) to view the full text.
+      - placeholder: description
+        content: |
+          Collection to install and configure [Red Hat Build of Keycloak](https://access.redhat.com/products/red-hat-build-of-keycloak).
   tasks:
     - ansible.builtin.include_role:
         name: community.fqcn_migration.fqcn_migration
