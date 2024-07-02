@@ -78,6 +78,9 @@
       - match: "rhbk-kerberos-federation"
         replace: "keycloak-kerberos-federation"
         file: "converge.yml$"
+      - match: "red-hat-build-of-rhbk"
+        replace: "red-hat-build-of-keycloak"
+        file: "README.md$"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_build_of_keycloak/
       homepage: https://access.redhat.com/products/red-hat-build-of-keycloak/
