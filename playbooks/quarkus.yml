@@ -1,0 +1,13 @@
+---
+- ansible.builtin.import_playbook: community.fqcn_migration.fqcn_migration
+  vars:
+    upstream_name: quarkus
+    downstream_name: quarkus
+    downstream_namespace: 'redhat'
+    upstream_namespace: 'middleware_automation'
+    project_git_url: "{{ lookup('env', 'GIT_REPOSITORY_URL') | default('https://github.com/ansible-middleware/quarkus.git', true) }}"
+    project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') | default('main', true) }}"
+    case_insensitive_match: true
+
+    upstream_downstream_collections_map:
+      - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
