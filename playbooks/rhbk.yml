@@ -14,7 +14,7 @@
     excluded_roles_from_downstream:
       - roles/keycloak
     project_git_url: https://github.com/ansible-middleware/keycloak.git
-    project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') | default('main') }}"
+    project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') | default('main', true) }}"
     upstream_downstream_collections_map:
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
     post_processors_replacements: []
