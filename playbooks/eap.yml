@@ -54,9 +54,15 @@
         content: |
           ## Support
 
-          redhat.eap collection v{{ galaxy_version | default('0.0.0-dev') }} is for [Technical Preview](https://access.redhat.com/support/offerings/techpreview).
-          If you have any issues or questions related to collection, please don't hesitate to contact us on <Ansible-middleware-core@redhat.com> or open an issue on
-          <https://github.com/ansible-middleware/wildfly/issues>
+          The redhat.eap collection v{{ galaxy_version | default('0.0.0-dev') }} is released as the [Red Hat Ansible certified content
+          collection for Red Hat JBoss Enterprise Application Platform](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/eap) with
+          [Production Support](https://access.redhat.com/support/offerings/production).
+          If you have any issues or questions related to this collection, please contact support at [Red Hat Customer
+          Experience & Engagement](https://access.redhat.com/support/). Alternatively contact the community by opening
+          an issue at https://github.com/ansible-middleware/wildfly/issues.
+
+          For more information about using this collection, see [Installing JBoss EAP by using the Red Hat Ansible Certified Content
+          Collection](https://docs.redhat.com/en/documentation/red_hat_jboss_enterprise_application_platform/7.4/html/installing_jboss_eap_by_using_the_red_hat_ansible_certified_content_collection/index).
       - placeholder: rhn_credentials
         content: |
           ## Downloading products from the Customer Portal
