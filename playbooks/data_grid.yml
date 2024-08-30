@@ -38,6 +38,9 @@
       - match: "schemas[/]data_grid-"
         replace: "schemas/infinispan-"
         file: 'xml.j2$'
+     - match: "[/]github.com[/]ansible-middleware[/]data_grid"
+       replace: "/github.com/ansible-middleware/infinispan"
+       file: "CHANGELOG.md$"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_data_grid
       homepage: https://access.redhat.com/products/red-hat-data-grid
