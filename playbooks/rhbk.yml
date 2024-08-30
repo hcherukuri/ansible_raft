@@ -81,6 +81,9 @@
       - match: "red-hat-build-of-rhbk"
         replace: "red-hat-build-of-keycloak"
         file: "README.md$"
+      - match: "[/]github.com[/]ansible-middleware[/]rhbk"
+        replace: "/github.com/ansible-middleware/keycloak"
+        file: "CHANGELOG.md$"
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_build_of_keycloak/
       homepage: https://access.redhat.com/products/red-hat-build-of-keycloak/
