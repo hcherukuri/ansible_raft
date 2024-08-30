@@ -51,7 +51,10 @@
     downstream_placeholder_content:
       - placeholder: roles_paths
         content: |
+          ### Included roles
 
+          * `infinispan`: performs an installation of DataGrid nodes or clusters, with configuration of static caches
+          * `infinispan_cache`: creates DataGrid caches at runtime
       - placeholder: galaxy_download
         content: |
           ### Installing the Collection from Automation Hub
