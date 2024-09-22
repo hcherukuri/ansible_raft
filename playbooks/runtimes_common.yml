@@ -17,6 +17,8 @@
         replace: "load_file_common_arguments"
       - match: "ansible[.]module_utils[.]runtimes_common"
         replace: "ansible.module_utils.common"
+      - match: "action_runtimes_common_attributes"
+        replace: "action_common_attributes"
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status
