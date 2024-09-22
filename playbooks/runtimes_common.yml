@@ -19,6 +19,12 @@
         replace: "ansible.module_utils.common"
       - match: "action_runtimes_common_attributes"
         replace: "action_common_attributes"
+      - match: "runtimes_runtimes_common"
+        replace: "runtimes_common"
+        file: "CHANGELOG.md$"
+      - match: "[/]github.com[/]ansible-middleware[/]runtimes_common"
+        replace: "/github.com/ansible-middleware/common"
+        file: "CHANGELOG.md$"
     # anything inside <!--start {{ <downstream_placeholder>_delete }} --> and <!--end {{ <downstream_placeholder>_delete }} --> will be removed
     downstream_placeholder_delete:
       - build_status
