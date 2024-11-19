@@ -7,6 +7,7 @@
     upstream_namespace: 'middleware_automation'
     project_git_url: "{{ lookup('env', 'GIT_REPOSITORY_URL') | default('https://github.com/ansible-middleware/jws.git', true) }}"
     project_git_version: "{{ lookup('env', 'GIT_REPOSITORY_BRANCH') | default('main', true) }}"
+    gitdescribe_galaxy_version: "{{ true if lookup('env', 'RELEASE_NAME') == '' else false }}"
     upstream_downstream_collections_map:
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
       - { upstream_name: 'middleware_automation.jws', downstream_name: 'redhat.jws' }
@@ -27,9 +28,9 @@
 
       - placeholder: ansible_version
         content: |
-          Red Hat supports the most recent version of redhat.jws collection on Ansible Automation Platform 2.5 / ansible-core 2.16. 
-          
-          The collection is continuously tested on Ansible version 2.14 or later. Red Hat might test the plug-ins and modules that are within a collection 
+          Red Hat supports the most recent version of redhat.jws collection on Ansible Automation Platform 2.5 / ansible-core 2.16.
+
+          The collection is continuously tested on Ansible version 2.14 or later. Red Hat might test the plug-ins and modules that are within a collection
           with specific Ansible versions only. A collection can contain metadata that identifies these Ansible versions, and a warning message will
           be printed if the collection is executed on not supported versions of Ansible.
       - placeholder: galaxy_download
