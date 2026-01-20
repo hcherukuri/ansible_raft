@@ -85,6 +85,8 @@
 
           For more information about using this collection, see [Installing JBoss EAP by using the Red Hat Ansible Certified Content
           Collection](https://docs.redhat.com/en/documentation/red_hat_jboss_enterprise_application_platform/7.4/html/installing_jboss_eap_by_using_the_red_hat_ansible_certified_content_collection/index).
+
+          The redhat.eap collection is currently designed for Red Hat Enterprise Linux and OpenJDK. For a comprehensive list of supported Red Hat Enterprise Linux and OpenJDK versions for each EAP release, please consult the [official documentation](https://access.redhat.com/support/configurations/jboss/).
       - placeholder: rhn_credentials
         content: |
           ## Downloading products from the Customer Portal
