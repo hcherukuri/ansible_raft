@@ -1,8 +1,133 @@
 ---
-- ansible.builtin.import_playbook: community.fqcn_migration.fqcn_migration
+# fqcn_migration always converts docs/CHANGELOG.rst via pandoc (see collection_skeleton.yml).
+# There is no convert_rst_to_md switch in community.fqcn_migration — ensure a working binary
+# before the migration play (CI images often lack the pandoc package; upstream unarchive fallback is broken).
+- name: Ensure pandoc for fqcn_migration (docs CHANGELOG.rst conversion)
+  hosts: localhost
+  gather_facts: true
   vars:
+    _sso_pandoc_dest: "/usr/local/bin/pandoc"
+    _sso_pandoc_version: "3.2"
+    _sso_pandoc_tar: >-
+      {{ 'pandoc-' ~ _sso_pandoc_version ~ '-linux-amd64.tar.gz'
+         if ansible_architecture in ['x86_64', 'amd64']
+         else ('pandoc-' ~ _sso_pandoc_version ~ '-linux-arm64.tar.gz'
+         if ansible_architecture in ['aarch64', 'arm64']
+         else 'pandoc-' ~ _sso_pandoc_version ~ '-linux-amd64.tar.gz') }}
+  tasks:
+    - name: Check pandoc at install path
+      ansible.builtin.stat:
+        path: "{{ _sso_pandoc_dest }}"
+      register: sso_pandoc_dest_stat
+
+    - name: Check /usr/bin/pandoc
+      ansible.builtin.stat:
+        path: /usr/bin/pandoc
+      register: sso_pandoc_usr_stat
+      when: not sso_pandoc_dest_stat.stat.exists
+
+    - name: Symlink /usr/bin/pandoc to local bin path for fqcn_migration
+      ansible.builtin.file:
+        src: /usr/bin/pandoc
+        dest: "{{ _sso_pandoc_dest }}"
+        state: link
+      become: true
+      when:
+        - not sso_pandoc_dest_stat.stat.exists
+        - sso_pandoc_usr_stat.stat.exists | default(false)
+
+    - name: Install pandoc system package (when available)
+      ansible.builtin.package:
+        name: pandoc
+        state: present
+      become: true
+      when:
+        - not sso_pandoc_dest_stat.stat.exists
+        - not (sso_pandoc_usr_stat.stat.exists | default(false))
+      register: sso_pandoc_pkg
+      failed_when: false
+
+    - name: Re-check /usr/bin/pandoc after package install
+      ansible.builtin.stat:
+        path: /usr/bin/pandoc
+      register: sso_pandoc_usr_post
+      when:
+        - not sso_pandoc_dest_stat.stat.exists
+        - not (sso_pandoc_usr_stat.stat.exists | default(false))
+        - sso_pandoc_pkg is succeeded
+
+    - name: Symlink /usr/bin/pandoc after package install
+      ansible.builtin.file:
+        src: /usr/bin/pandoc
+        dest: "{{ _sso_pandoc_dest }}"
+        state: link
+      become: true
+      when:
+        - not sso_pandoc_dest_stat.stat.exists
+        - sso_pandoc_usr_post.stat.exists | default(false)
+
+    - name: Re-check pandoc path before standalone install
+      ansible.builtin.stat:
+        path: "{{ _sso_pandoc_dest }}"
+      register: sso_pandoc_dest_stat2
+
+    - name: Install pandoc from GitHub release (fallback)
+      when: not sso_pandoc_dest_stat2.stat.exists
+      block:
+        - name: Create temp directory for pandoc download
+          ansible.builtin.tempfile:
+            state: directory
+          register: sso_pandoc_tmpdir
+
+        - name: Download pandoc tarball
+          ansible.builtin.get_url:
+            url: "https://github.com/jgm/pandoc/releases/download/{{ _sso_pandoc_version }}/{{ _sso_pandoc_tar }}"
+            dest: "{{ sso_pandoc_tmpdir.path }}/{{ _sso_pandoc_tar }}"
+            mode: "0644"
+
+        - name: Unarchive pandoc
+          ansible.builtin.unarchive:
+            src: "{{ sso_pandoc_tmpdir.path }}/{{ _sso_pandoc_tar }}"
+            dest: "{{ sso_pandoc_tmpdir.path }}"
+            remote_src: true
+
+        - name: Install pandoc binary
+          ansible.builtin.copy:
+            src: "{{ sso_pandoc_tmpdir.path }}/pandoc-{{ _sso_pandoc_version }}/bin/pandoc"
+            dest: "{{ _sso_pandoc_dest }}"
+            mode: "0755"
+            remote_src: true
+          become: true
+
+        - name: Remove pandoc temp directory
+          ansible.builtin.file:
+            path: "{{ sso_pandoc_tmpdir.path }}"
+            state: absent
+
+    - name: Verify pandoc works
+      ansible.builtin.command: "{{ _sso_pandoc_dest }} -v"
+      changed_when: false
+
+# Inlined from community.fqcn_migration playbooks/fqcn_migration.yml — import_playbook runs the
+# whole play including post_tasks (release + collection build), so a separate rename play ran too
+# late: git commit/tag and galaxy build still saw keycloak.*.j2. Keep this block in sync when
+# upgrading community.fqcn_migration.
+- name: FQCN migration process (SSO)
+  hosts: localhost
+  gather_facts: false
+  vars:
+    _janus_workdir: "{{ workdir | default(lookup('env', 'PWD'), true) }}"
+    workdir: "{{ _janus_workdir }}"
+    upstream_projects_dir: "{{ _janus_workdir }}/upstream"
+    downstream_projects_dir: "{{ _janus_workdir }}/downstream"
+    downstream_repository_host_env_varname: 'INTERNAL_GIT_REPOSITORY_URL'
+    skip_setup: true
+    release_version: "{{ lookup('env', 'RELEASE_NAME') | default('', true) }}"
     upstream_name: keycloak
     downstream_name: sso
+    upstream_collection_name: "{{ lookup('env', 'UPSTREAM_COLLECTION_NAME') | default(upstream_name, true) }}"
+    # Must match _sso_pandoc_dest in the pre-play above (role default is /usr/bin/pandoc).
+    pandoc_binary: /usr/local/bin/pandoc
     downstream_namespace: 'redhat'
     upstream_namespace: 'middleware_automation'
     project_git_url: "https://github.com/ansible-middleware/{{ upstream_name }}.git"
@@ -12,30 +137,115 @@
       - { upstream_name: 'middleware_automation.common', downstream_name: 'redhat.runtimes_common' }
       - { upstream_name: 'middleware_automation.wildfly', downstream_name: 'redhat.eap' }
     post_processors_replacements:
+      # keycloak_quarkus role: convert content from keycloak to sso (templates and tasks)
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'keycloak_quarkus'
+      - match: "keycloak[.]"
+        replace: "sso."
+        file: 'keycloak_quarkus'
+      - match: "ansible_local[.]keycloak"
+        replace: "ansible_local.sso"
+        file: 'keycloak_quarkus'
+      - match: "Description=Keycloak Server"
+        replace: "Description=Red Hat Single Sign-On"
+        file: 'keycloak_quarkus'
+      # keycloak_quarkus/templates: ensure template file content is converted (path-based match)
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'keycloak_quarkus/templates'
+      - match: "keycloak[.]"
+        replace: "sso."
+        file: 'keycloak_quarkus/templates'
+      - match: "ansible_local[.]keycloak"
+        replace: "ansible_local.sso"
+        file: 'keycloak_quarkus/templates'
+      - match: "Description=Keycloak Server"
+        replace: "Description=Red Hat Single Sign-On"
+        file: 'keycloak_quarkus/templates'
+      # keycloak_quarkus templates by basename (in case file match uses filename only)
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'keycloak[.]conf[.]j2$'
+      - match: "keycloak[.]"
+        replace: "sso."
+        file: 'keycloak[.]conf[.]j2$'
+      - match: "ansible_local[.]keycloak"
+        replace: "ansible_local.sso"
+        file: 'keycloak[.]conf[.]j2$'
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'keycloak[.]service[.]j2$'
+      - match: "keycloak[.]"
+        replace: "sso."
+        file: 'keycloak[.]service[.]j2$'
+      - match: "Description=Keycloak Server"
+        replace: "Description=Red Hat Single Sign-On"
+        file: 'keycloak[.]service[.]j2$'
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'keycloak-sysconfig[.]j2$'
+      - match: "keycloak[.]"
+        replace: "sso."
+        file: 'keycloak-sysconfig[.]j2$'
+      - match: "ansible_local[.]keycloak"
+        replace: "ansible_local.sso"
+        file: 'keycloak-sysconfig[.]j2$'
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'keycloak[.]fact[.]j2$'
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'quarkus[.]properties[.]j2$'
+      - match: "keycloak_quarkus_"
+        replace: "sso_quarkus_"
+        file: 'cache-ispn[.]xml[.]j2$'
+      # keycloak_quarkus: handler listen names and notify targets
+      - match: "restart keycloak"
+        replace: "restart sso"
+        file: 'keycloak_quarkus'
+      - match: "rebuild keycloak config"
+        replace: "rebuild sso config"
+        file: 'keycloak_quarkus'
+      - match: "invalidate keycloak theme cache"
+        replace: "invalidate sso theme cache"
+        file: 'keycloak_quarkus'
+      - match: "for keycloak service"
+        replace: "for sso service"
+        file: 'keycloak_quarkus'
+      # keycloak_quarkus: keep systemd unit path as keycloak.service
+      - match: "/etc/systemd/system/sso[.]service"
+        replace: "/etc/systemd/system/keycloak.service"
+        file: 'keycloak_quarkus'
+      # Wildfly sso role only: revert template filenames to keycloak.* (sso_quarkus keeps sso.*)
       - match: "sso[.]service[.]j2"
         replace: "keycloak.service.j2"
-        file: 'systemd[.]yml$'
+        file: 'roles/sso/'
       - match: "sso-sysconfig[.]j2"
         replace: "keycloak-sysconfig.j2"
-        file: 'systemd[.]yml$'
+        file: 'roles/sso/'
       - match: "sso-service[.]sh[.]j2"
         replace: "keycloak-service.sh.j2"
-        file: 'systemd[.]yml$'
+        file: 'roles/sso/'
+      # Wildfly sso role only (exclude sso_quarkus): revert xml to keycloak for compatibility
       - match: 'cache-container name="sso"( modules="org[.]sso[.]sso-model-infinispan")?'
         replace: 'cache-container name="keycloak" modules="org.keycloak.keycloak-model-infinispan"'
-        file: 'xml.j2$'
+        file: 'roles/sso/templates/'
       - match: "org[.]sso[.]"
         replace: "org.keycloak."
+        file: 'roles/sso/'
       - match: "sso[.]org"
         replace: "keycloak.org"
+        file: 'roles/sso/'
       - match: "sso-server-subsystem"
         replace: "keycloak-server-subsystem"
-        file: 'xml.j2$'
+        file: 'roles/sso/'
       - match: "[$][{]sso[.]"
         replace: "${keycloak."
+        file: 'roles/sso/'
       - match: "urn:jboss:domain:sso-server:1[.]1"
         replace: "urn:jboss:domain:keycloak-server:1.1"
-        file: 'xml.j2$'
+        file: 'roles/sso/'
       - match: "start_sso[.]yml"
         replace: "start_keycloak.yml"
         file: '[.]yml$'
@@ -44,13 +254,13 @@
         file: '[.]yml$'
       - match: "java:jboss/infinispan/container/sso"
         replace: "java:jboss/infinispan/container/keycloak"
-        file: 'xml.j2$'
+        file: 'roles/sso/'
       - match: 'local-cache name="sso"'
         replace: 'local-cache name="keycloak"'
-        file: 'xml.j2$'
+        file: 'roles/sso/'
       - match: 'sso-database-update[.]sql'
         replace: 'keycloak-database-update.sql'
-        file: 'xml.j2$'
+        file: 'roles/sso/'
       - match: '/bin/add-user-sso'
         replace: '/bin/add-user-keycloak'
         file: 'main[.]yml$'
@@ -102,3 +312,100 @@
           set it with the `sso_patch_version` variable.
 
           NOTE: downgrading patches is not supported.
+
+  pre_tasks:
+    - name: Display release version (if provided).
+      ansible.builtin.debug:
+        var: release_version
+      when:
+        - release_version is defined
+        - release_version | length > 0
+
+    - name: Ensure all required parameters have been provided
+      tags: always
+      ansible.builtin.assert:
+        that:
+          - downstream_name is defined
+          - upstream_name is defined
+          - project_git_url is defined
+        quiet: true
+        fail_msg: "Missing required parameter(s)."
+
+    - name: Determine full path to project folder (if not provided).
+      tags: always
+      ansible.builtin.set_fact:
+        project_root_folder: "{{ _janus_workdir }}/upstream/{{ upstream_name }}.git"
+      when:
+        - project_root_folder is not defined
+        - upstream_name is defined
+
+    - name: Define path to downstream project
+      tags: always
+      ansible.builtin.set_fact:
+        downstream_project: "{{ downstream_projects_dir }}/{{ downstream_name }}"
+
+    - name: Git clone upstream collection
+      ansible.builtin.include_role:
+        name: community.fqcn_migration.git
+        tasks_from: clone.yml
+      when:
+        - project_root_folder is defined
+        - project_git_url is defined
+
+  tasks:
+    - name: Run FQCN migration
+      ansible.builtin.include_role:
+        name: community.fqcn_migration.fqcn_migration
+      tags: always
+
+    # fqcn_migration renames the role dir to sso_quarkus but leaves template basenames as keycloak.*.
+    # Must run before release.yml / collection build so commit + tarball contain sso.*.j2.
+    - name: Rename sso_quarkus template files keycloak.* to sso.*
+      ansible.builtin.shell: |
+        d="{{ downstream_project }}/roles/sso_quarkus/templates"
+        changed=0
+        if [ ! -d "$d" ]; then exit 0; fi
+        ren() {
+          if [ -f "$d/$1" ] && [ ! -e "$d/$2" ]; then
+            mv "$d/$1" "$d/$2"
+            changed=1
+          fi
+        }
+        ren keycloak.conf.j2 sso.conf.j2
+        ren keycloak.service.j2 sso.service.j2
+        ren keycloak-sysconfig.j2 sso-sysconfig.j2
+        ren keycloak.fact.j2 sso.fact.j2
+        if [ "$changed" -eq 1 ]; then echo CHANGED; fi
+      args:
+        executable: /bin/bash
+      register: sso_quarkus_tpl_rename
+      changed_when: "'CHANGED' in (sso_quarkus_tpl_rename.stdout | default(''))"
+
+    # release.yml uses `git commit ... -a`, which stages edits/removals to *tracked* files only.
+    # After mv, sso.*.j2 are *untracked*; without git add, the commit drops templates (looks like delete-only).
+    - name: Check downstream is a git repo (for staging template renames)
+      ansible.builtin.stat:
+        path: "{{ downstream_project }}/.git"
+      register: sso_downstream_git
+
+    - name: Stage sso_quarkus template renames for git (so release commit includes sso.*.j2)
+      ansible.builtin.command:
+        argv: [git, add, roles/sso_quarkus/templates/]
+      args:
+        chdir: "{{ downstream_project }}"
+      when: sso_downstream_git.stat.exists | default(false)
+
+  post_tasks:
+    - name: "Perform release (if requested): {{ release_version == '' | ternary('no release version provided', release_version) }}."
+      ansible.builtin.include_role:
+        name: community.fqcn_migration.fqcn_migration
+        tasks_from: release.yml
+      when:
+        - release_version is defined
+        - release_version != ""
+        - release_version != "TEST"
+
+    - name: Build collection for {{ downstream_name }}
+      ansible.builtin.command: ansible-galaxy collection build .
+      args:
+        chdir: "{{ downstream_project }}"
