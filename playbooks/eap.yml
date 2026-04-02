@@ -64,12 +64,6 @@
        replace: "8.0.0"
      - match: "39.0.0.Final"
        replace: "8.1.0"
-     - match: "wildfly_install_workdir: '/opt/wildfly/'"
-       replace: "eap_install_workdir: /opt/jboss_eap/"
-       file: 'molecule/offline_install_driver/verify.yml$'
-     - match: 'wildfly_home: "{{ wildfly_install_workdir }}wildfly-{{ wildfly_version }}/"'
-       replace: 'eap_home: "{{ eap_install_workdir }}jboss-eap-{{ (eap_version.split(''.''))[0:2] | join(''.'') }}/"'
-       file: 'molecule/offline_install_driver/verify.yml$'
     galaxy:
       documentation: https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform
       homepage: https://access.redhat.com/products/red-hat-jboss-enterprise-application-platform
