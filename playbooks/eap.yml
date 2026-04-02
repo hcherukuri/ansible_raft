@@ -64,10 +64,10 @@
        replace: "8.0.0"
      - match: "39.0.0.Final"
        replace: "8.1.0"
-     - match: "eap_install_workdir: '/opt/eap/'"
+     - match: "wildfly_install_workdir: '/opt/wildfly/'"
        replace: "eap_install_workdir: /opt/jboss_eap/"
        file: 'molecule/offline_install_driver/verify.yml$'
-     - match: 'eap_home: "{{ eap_install_workdir }}eap-{{ eap_version }}/"'
+     - match: 'wildfly_home: "{{ wildfly_install_workdir }}wildfly-{{ wildfly_version }}/"'
        replace: 'eap_home: "{{ eap_install_workdir }}jboss-eap-{{ (eap_version.split(''.''))[0:2] | join(''.'') }}/"'
        file: 'molecule/offline_install_driver/verify.yml$'
     galaxy:
