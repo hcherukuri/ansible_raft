@@ -19,15 +19,17 @@ jobs:
         python_version: ["3.11"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           path: ansible_collections/middleware_automation/janus
 
       - name: Set up Python ${{ matrix.python_version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python_version }}
-          cache: 'pip'
+          cache: pip
+          # requirements.txt lives under the collection checkout path, not repo root
+          cache-dependency-path: ansible_collections/middleware_automation/janus/requirements.txt
 
       - name: Install yamllint, ansible and molecule
         run: |

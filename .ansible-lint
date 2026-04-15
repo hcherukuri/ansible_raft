@@ -46,4 +46,3 @@ skip_list:
   - jinja[spacing]
 
 use_default_rules: true
-parseable: true
