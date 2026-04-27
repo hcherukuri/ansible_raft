@@ -55,6 +55,9 @@
      - match: "[/]github.com[/]ansible-middleware[/]eap"
        replace: "/github.com/ansible-middleware/wildfly"
        file: "CHANGELOG.md$"
+     # Upstream GPL applies to wildfly collection sources; keep LICENSE link on wildfly, not eap.
+     - match: "github[.]com/ansible-middleware/eap/blob/main/LICENSE"
+       replace: "github.com/ansible-middleware/wildfly/blob/main/LICENSE"
 #     - match: "eap_apply_cp: [tT]rue"
 #       replace: "eap_apply_cp: false"
 #       file: "defaults/main.yml$"
@@ -115,17 +118,7 @@
         content: |
           ## Support
 
-          The redhat.eap collection v{{ galaxy_version | default('0.0.0-dev') }} is released as the [Red Hat Ansible certified content
-          collection for Red Hat JBoss Enterprise Application Platform](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/eap) with
-          [Production Support](https://access.redhat.com/support/offerings/production).
-          If you have any issues or questions related to this collection, please contact support at [Red Hat Customer
-          Experience & Engagement](https://access.redhat.com/support/). Alternatively contact the community by opening
-          an issue at https://github.com/ansible-middleware/wildfly/issues.
-
-          For more information about using this collection, see [Installing JBoss EAP by using the Red Hat Ansible Certified Content
-          Collection](https://docs.redhat.com/en/documentation/red_hat_jboss_enterprise_application_platform/7.4/html/installing_jboss_eap_by_using_the_red_hat_ansible_certified_content_collection/index).
-
-          The redhat.eap collection is currently designed for Red Hat Enterprise Linux and OpenJDK. For a comprehensive list of supported Red Hat Enterprise Linux and OpenJDK versions for each EAP release, please consult the [official documentation](https://access.redhat.com/support/configurations/jboss/).
+          As Red Hat Ansible Certified Content, this collection is entitled to support through the Ansible Automation Platform (AAP) using the **Create issue** button on the top right corner. If a support case cannot be opened with Red Hat and the collection has been obtained either from Galaxy or GitHub, there may community help available on the [Ansible Forum](https://forum.ansible.com/).
       - placeholder: rhn_credentials
         content: |
           ## Downloading products from the Customer Portal

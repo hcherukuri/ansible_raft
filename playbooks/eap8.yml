@@ -34,6 +34,9 @@
      - match: "eap_apply_cp: [tT]rue"
        replace: "eap_apply_cp: false"
        file: "defaults/main.yml$"
+     # Upstream GPL applies to wildfly collection sources; keep LICENSE link on wildfly, not eap.
+     - match: "github[.]com/ansible-middleware/eap/blob/main/LICENSE"
+       replace: "github.com/ansible-middleware/wildfly/blob/main/LICENSE"
      - match: "32.0.0.Beta1"
        replace: "8.0.0"
      # Same as playbooks/eap.yml: match is REGEX; replace must not let Ansible template {{ at Janus time.
