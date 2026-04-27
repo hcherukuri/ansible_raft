@@ -58,6 +58,8 @@
      # Upstream GPL applies to wildfly collection sources; keep LICENSE link on wildfly, not eap.
      - match: "github[.]com/ansible-middleware/eap/blob/main/LICENSE"
        replace: "github.com/ansible-middleware/wildfly/blob/main/LICENSE"
+     - match: "github[.]com/ansible-middleware/eap/blob/main/CHANGELOG.rst"
+       replace: "github.com/ansible-middleware/wildfly/blob/main/CHANGELOG.rst"
 #     - match: "eap_apply_cp: [tT]rue"
 #       replace: "eap_apply_cp: false"
 #       file: "defaults/main.yml$"
